@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase, N8N_DISPATCH_URL } from '../lib/supabase';
+import { supabase, EDGE_FUNCTIONS } from '../lib/supabase';
 import { Save, Eye, EyeOff, Loader2, ExternalLink, Copy } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -138,27 +138,28 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700 block mb-1">n8n Dispatch URL</label>
+            <label className="text-sm font-medium text-gray-700 block mb-1">Edge Functions Base URL</label>
             <div className="flex items-center gap-2">
               <input
                 readOnly
-                value={N8N_DISPATCH_URL}
+                value={EDGE_FUNCTIONS.councilDispatch}
                 className="input-field text-xs font-mono flex-1 bg-gray-50"
               />
               <button
-                onClick={() => copyToClipboard(N8N_DISPATCH_URL, 'n8n URL')}
+                onClick={() => copyToClipboard(EDGE_FUNCTIONS.councilDispatch, 'Edge Function URL')}
                 className="btn-outline p-2"
               >
                 <Copy size={14} />
               </button>
             </div>
-            <p className="text-xs text-gray-400 mt-1">Agent test runs are dispatched to this webhook</p>
+            <p className="text-xs text-gray-400 mt-1">Agent runs dispatched via Supabase Edge Functions (8 deployed)</p>
           </div>
 
           <div className="bg-gray-50 rounded-lg p-4 text-xs text-gray-500 space-y-1">
-            <p><span className="font-medium text-gray-700">App Version:</span> 1.0.0</p>
-            <p><span className="font-medium text-gray-700">Stack:</span> React + Supabase + n8n + Claude API</p>
+            <p><span className="font-medium text-gray-700">App Version:</span> 2.0.0</p>
+            <p><span className="font-medium text-gray-700">Stack:</span> React + Supabase Edge Functions + Claude API</p>
             <p><span className="font-medium text-gray-700">Agents:</span> 6 (Reconciliation, Claims, Courier, Tax, Billing, Insights)</p>
+            <p><span className="font-medium text-gray-700">Edge Functions:</span> 8 (council-dispatch, parse-settlement, run-reconciliation, draft-claim, send-claim-email, escalation-check, dispute-alert, create-invoice)</p>
           </div>
         </div>
       </div>

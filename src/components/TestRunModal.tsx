@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { X, Play, Copy, Loader2, CheckCircle2 } from 'lucide-react';
-import { N8N_DISPATCH_URL } from '../lib/supabase';
+import { EDGE_FUNCTIONS } from '../lib/supabase';
 import type { Agent } from '../types';
 import toast from 'react-hot-toast';
 
@@ -25,7 +25,7 @@ export default function TestRunModal({ agent, onClose }: Props) {
     setMeta(null);
 
     try {
-      const res = await fetch(N8N_DISPATCH_URL, {
+      const res = await fetch(EDGE_FUNCTIONS.councilDispatch, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

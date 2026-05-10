@@ -5,9 +5,33 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// For local n8n: http://localhost:5678/webhook/council-dispatch
-// For cloud n8n: https://YOUR-INSTANCE.app.n8n.cloud/webhook/council-dispatch
-// Update VITE_N8N_DISPATCH_URL in Vercel env vars when you deploy n8n to cloud
-export const N8N_DISPATCH_URL = import.meta.env.VITE_N8N_DISPATCH_URL || 'http://localhost:5678/webhook/parse-settlement';
+// ─── Supabase Edge Functions (replaced n8n) ─────────────────────────────────
+const EDGE_FN_BASE = `${supabaseUrl}/functions/v1`;
 
-export const N8N_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkM2Q5M2QwMC01Y2Y5LTRkMGUtYmZjMi1hMjBmZmE1Y2VhYzIiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiMzdjZGQ4MWItZTY0Yy00ZGNmLWI0NTAtMmU4ZTIzZjFhYmI5IiwiaWF0IjoxNzc4MzkyNDYxLCJleHAiOjE3ODYwNzUyMDB9.dAOGW5-d5KhuoMtoKKtyjP2sJy77sK_t7kIZkf98uBw';
+export const EDGE_FUNCTIONS = {
+  councilDispatch: `${EDGE_FN_BASE}/council-dispatch`,
+  parseSettlement: `${EDGE_FN_BASE}/parse-settlement`,
+  runReconciliation: `${EDGE_FN_BASE}/run-reconciliation`,
+  draftClaim: `${EDGE_FN_BASE}/draft-claim`,
+  sendClaimEmail: `${EDGE_FN_BASE}/send-claim-email`,
+  escalationCheck: `${EDGE_FN_BASE}/escalation-check`,
+  disputeAlert: `${EDGE_FN_BASE}/dispute-alert`,
+  createInvoice: `${EDGE_FN_BASE}/create-invoice`,
+};
+
+// Helper to call any Edge Function
+export async function callEdgeFunction(name: keyof typeof EDGE_FUNCTIONS, payload: any) {
+  const url = EDGE_FUNCTIONS[name];
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${supabaseAnonKey}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  return res.json();
+}
+
+// Legacy aliases for backward compatibility
+export const N8N_DISPATCH_URL = EDGE_FUNCTIONS.councilDispatch;
