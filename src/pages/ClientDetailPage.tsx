@@ -3,8 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ArrowLeft, FileText, AlertTriangle, CheckCircle2, Clock, TrendingUp, IndianRupee } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import SettlementUpload from '../components/SettlementUpload';
-import ActionToolbar from '../components/ActionToolbar';
+import AutoPipeline from '../components/AutoPipeline';
 
 interface Brand {
   id: string; name: string; tier: string; category: string; monthly_gmv: number;
@@ -78,8 +77,6 @@ export default function ClientDetailPage() {
     };
     return map[status] || 'bg-gray-100 text-gray-600';
   };
-
-  const hasDraftedClaims = claims.some(c => c.status === 'drafted');
 
   const tabs = [
     { key: 'overview', label: 'Overview' },
@@ -233,15 +230,7 @@ export default function ClientDetailPage() {
       )}
 
       {tab === 'actions' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <SettlementUpload brandId={brandId!} onComplete={fetchAll} />
-          <ActionToolbar
-            brandId={brandId!}
-            hasDiscrepancies={openDisc.length > 0}
-            hasDraftedClaims={hasDraftedClaims}
-            onComplete={fetchAll}
-          />
-        </div>
+        <AutoPipeline brandId={brandId!} onComplete={fetchAll} />
       )}
 
       {tab === 'discrepancies' && (
