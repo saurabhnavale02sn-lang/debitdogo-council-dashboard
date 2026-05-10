@@ -1,11 +1,14 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, ScrollText, Users, ShieldCheck, Settings, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, ScrollText, Users, ShieldCheck, Settings, LogOut, Menu, X, Building2, BarChart3, IndianRupee } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useState } from 'react';
 
 const navItems = [
-  { to: '/council', icon: LayoutDashboard, label: 'Council Overview', roles: ['super_admin', 'admin'] },
-  { to: '/logs', icon: ScrollText, label: 'Run Logs', roles: ['super_admin', 'admin'] },
+  { to: '/council', icon: LayoutDashboard, label: 'AI Council', roles: ['super_admin', 'admin'] },
+  { to: '/clients', icon: Building2, label: 'Clients', roles: ['super_admin', 'admin'] },
+  { to: '/analytics', icon: BarChart3, label: 'Analytics', roles: ['super_admin', 'admin'] },
+  { to: '/revenue', icon: IndianRupee, label: 'Revenue', roles: ['super_admin'] },
+  { to: '/runs', icon: ScrollText, label: 'Run Logs', roles: ['super_admin', 'admin'] },
   { to: '/users', icon: Users, label: 'Users', roles: ['super_admin'] },
   { to: '/audit', icon: ShieldCheck, label: 'Audit Log', roles: ['super_admin'] },
   { to: '/settings', icon: Settings, label: 'Settings', roles: ['super_admin', 'admin'] },
