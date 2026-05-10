@@ -117,11 +117,11 @@ export default function SettingsPage() {
             <div className="flex items-center gap-2">
               <input
                 readOnly
-                value={import.meta.env.VITE_SUPABASE_URL || 'https://spglhsnskcchtqzgkmss.supabase.co'}
+                value="https://spglhsnskcchtqzgkmss.supabase.co"
                 className="input-field text-xs font-mono flex-1 bg-gray-50"
               />
               <button
-                onClick={() => copyToClipboard(import.meta.env.VITE_SUPABASE_URL || 'https://spglhsnskcchtqzgkmss.supabase.co', 'Supabase URL')}
+                onClick={() => copyToClipboard('https://spglhsnskcchtqzgkmss.supabase.co', 'Supabase URL')}
                 className="btn-outline p-2"
               >
                 <Copy size={14} />
