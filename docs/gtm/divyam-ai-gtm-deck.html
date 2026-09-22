@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Go-To-Market Blueprint: Divyam.AI</title>
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --bg:#0B1020; --bg2:#111834; --ink:#F2F5FF; --mut:#8C97BF;
+    --acc:#4ADE80; --acc2:#60A5FA; --warn:#FBBF24; --line:#222C4E; --red:#F87171;
+  }
+  html,body{ background:var(--bg); color:var(--ink);
+    font-family:"Helvetica Neue",Helvetica,Arial,"DejaVu Sans",sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .slide{ width:1280px; height:720px; padding:56px 68px; position:relative;
+    page-break-after:always; break-after:page; overflow:hidden;
+    background:var(--bg); display:flex; flex-direction:column; }
+  .slide:last-child{ page-break-after:auto; }
+  .eyebrow{ font-size:13px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--acc); font-weight:700; margin-bottom:14px; }
+  h1{ font-size:62px; line-height:1.04; letter-spacing:-.025em; font-weight:800; }
+  h2{ font-size:42px; line-height:1.1; letter-spacing:-.02em; font-weight:800; margin-bottom:8px; }
+  .sub{ font-size:19px; color:var(--mut); margin-bottom:26px; line-height:1.45; max-width:1050px; }
+  ul{ list-style:none; }
+  li{ font-size:22px; line-height:1.42; margin-bottom:17px; padding-left:26px;
+    position:relative; color:#DDE4FA; max-width:1090px; }
+  li:before{ content:""; position:absolute; left:0; top:11px; width:8px; height:8px;
+    background:var(--acc); border-radius:2px; }
+  b,strong{ color:#fff; font-weight:800; }
+  .num{ color:var(--acc); font-weight:800; }
+  .rule{ height:3px; width:76px; background:var(--acc); margin:22px 0 28px; }
+  .foot{ position:absolute; bottom:26px; left:68px; right:68px;
+    display:flex; justify-content:space-between; font-size:12.5px;
+    color:#56618C; letter-spacing:.06em; text-transform:uppercase; }
+  .cols{ display:flex; gap:34px; flex:1; }
+  .card{ flex:1; background:var(--bg2); border:1px solid var(--line);
+    border-radius:14px; padding:26px 28px; }
+  .card h3{ font-size:15px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--acc2); margin-bottom:16px; font-weight:800; }
+  .card.warn h3{ color:var(--warn); }
+  .card li{ font-size:18.5px; margin-bottom:13px; line-height:1.38; }
+  .card li:before{ background:var(--acc2); }
+  .card.warn li:before{ background:var(--warn); }
+  table{ width:100%; border-collapse:collapse; font-size:17px; }
+  th{ text-align:left; font-size:12.5px; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--acc); padding:0 14px 12px 0; border-bottom:1px solid var(--line); font-weight:800; }
+  td{ padding:13px 14px 13px 0; border-bottom:1px solid #19213c;
+    vertical-align:top; line-height:1.34; color:#D6DEF7; }
+  td.k{ color:#fff; font-weight:800; width:186px; }
+  .kpis{ display:flex; gap:20px; margin-top:8px; }
+  .kpi{ flex:1; background:var(--bg2); border:1px solid var(--line);
+    border-radius:14px; padding:24px 22px; }
+  .kpi .v{ font-size:50px; font-weight:800; color:var(--acc); letter-spacing:-.03em; line-height:1; }
+  .kpi .l{ font-size:14.5px; color:var(--mut); margin-top:11px; line-height:1.35; }
+  .quote{ font-size:31px; line-height:1.34; font-weight:700; letter-spacing:-.015em;
+    border-left:4px solid var(--acc); padding-left:26px; margin:6px 0 30px; max-width:1060px; }
+  .loop{ display:flex; align-items:stretch; gap:14px; margin-top:6px; }
+  .step{ flex:1; background:var(--bg2); border:1px solid var(--line);
+    border-radius:14px; padding:22px 20px; position:relative; }
+  .step .n{ font-size:12px; color:var(--acc); font-weight:800; letter-spacing:.16em; margin-bottom:10px; }
+  .step .t{ font-size:21px; font-weight:800; margin-bottom:10px; }
+  .step .d{ font-size:15.5px; color:#B7C2E4; line-height:1.4; }
+  .arrow{ align-self:center; color:var(--acc); font-size:26px; font-weight:800; }
+  .tag{ display:inline-block; font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    background:#16203f; border:1px solid var(--line); color:var(--acc2);
+    padding:5px 11px; border-radius:999px; margin-right:8px; font-weight:700; }
+  .title-wrap{ flex:1; display:flex; flex-direction:column; justify-content:center; }
+  .meta{ display:flex; gap:44px; margin-top:38px; font-size:16px; color:var(--mut); }
+  .meta b{ display:block; font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:#56618C; margin-bottom:6px; font-weight:800; }
+  .glow{ position:absolute; width:620px; height:620px; border-radius:50%;
+    background:radial-gradient(circle,#1D2A57 0%,rgba(11,16,32,0) 68%);
+    right:-150px; top:-170px; }
+  .ask li:before{ background:var(--warn); }
+</style>
+</head>
+<body>
+
+<!-- 1 TITLE -->
+<div class="slide">
+  <div class="glow"></div>
+  <div class="title-wrap">
+    <div class="eyebrow">Founding Account Executive · India</div>
+    <h1>Go-To-Market Blueprint:<br>Divyam.AI</h1>
+    <div class="rule"></div>
+    <div class="sub" style="font-size:24px;max-width:820px;">90-Day Execution Strategy for Founding AE</div>
+    <div class="meta">
+      <div><b>Prepared for</b>Sandeep Kohli, CEO</div>
+      <div><b>Presenter</b>[My Name]</div>
+      <div><b>Date</b>22 September 2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- 2 THESIS -->
+<div class="slide">
+  <div class="eyebrow">The Thesis</div>
+  <h2>Five lines. Then the evidence.</h2>
+  <div class="rule"></div>
+  <ul>
+    <li>Divyam is not an observability vendor. <b>Dashboards are a cost centre; Divyam is a P&amp;L line item.</b></li>
+    <li>The wedge is the <b>closed loop</b>: EvalMate sets the quality bar, Model Router enforces it, traffic moves with no human in the loop.</li>
+    <li>Proof already exists: <b>MakeMyTrip cut LLM costs <span class="num">63%</span> with zero quality loss</b> on Myra. That is the entire first call.</li>
+    <li>We cannot outspend <b>Portkey ($15M Series A)</b>. We out-architect them and out-work them on targeted outbound.</li>
+    <li>90-day target: <b><span class="num">40</span> qualified technical discos → <span class="num">12</span> paid single-workload pilots → <span class="num">3</span> logos closed.</b></li>
+  </ul>
+  <div class="foot"><span>Divyam.AI — GTM Blueprint</span><span>02</span></div>
+</div>
+
+<!-- 3 CORE PROBLEM -->
+<div class="slide">
+  <div class="eyebrow">Market Reality</div>
+  <h2>Inference cost scales with usage, not headcount.</h2>
+  <div class="sub">Every successful AI feature makes gross margin worse. The arbitrage is sitting unclaimed.</div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">8–20x</div><div class="l">Price spread between frontier and open-weight models on the same workload</div></div>
+    <div class="kpi"><div class="v">~300x</div><div class="l">Token price decline since 2023 — and enterprise bills still went <b>up</b></div></div>
+    <div class="kpi"><div class="v">$2.50</div><div class="l">GPT-4o per 1M input tokens vs <b>$0.30</b> DeepSeek-flash, <b>$0.10</b> Llama 4 Scout</div></div>
+  </div>
+  <ul style="margin-top:30px;">
+    <li>Nobody moves traffic to the cheap model because <b>nobody can prove quality holds.</b></li>
+    <li>That fear — not the price list — is the real product gap. Divyam already names it: <b>model inertia</b>. Most commercially useful phrase we own.</li>
+  </ul>
+  <div class="foot"><span>Sources: LLM API pricing 2026, AI Price Index</span><span>03</span></div>
+</div>
+
+<!-- 4 US vs INDIA -->
+<div class="slide">
+  <div class="eyebrow">Market Reality</div>
+  <h2>Two markets. Two entirely different buyers.</h2>
+  <div class="rule"></div>
+  <div class="cols">
+    <div class="card">
+      <h3>United States</h3>
+      <ul>
+        <li>Heavily funded, converging on <b>broad AI observability</b> — traces, spans, scores, dashboards.</li>
+        <li>Braintrust raised one of 2026's largest eval rounds. LangSmith owns the LangChain install base.</li>
+        <li>Their buyer is the <b>AI engineer debugging quality.</b></li>
+      </ul>
+    </div>
+    <div class="card warn">
+      <h3>India</h3>
+      <ul>
+        <li><b>Hyper cost-conscious.</b> ROI in a quarter, not a platform vision in a year.</li>
+        <li><b>Sovereignty is contractual, not aspirational.</b> DPDP + RBI payment-data localisation gate every BFSI deal.</li>
+        <li>DPDP programmes alone run <b>₹15–60 lakh</b> at large enterprises — we compete against that budget.</li>
+        <li>Our buyer is the <b>exec defending margin.</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sub" style="margin:26px 0 0;font-size:20px;color:#DDE4FA;">→ Consequence: <b>air-gapped deployment is not a feature. It is the entry ticket</b> to the top 50 accounts in this market.</div>
+  <div class="foot"><span>Divyam.AI — GTM Blueprint</span><span>04</span></div>
+</div>
+
+<!-- 5 LANDSCAPE -->
+<div class="slide">
+  <div class="eyebrow">Competitive Landscape</div>
+  <h2>Where each of them loses to us.</h2>
+  <div class="rule" style="margin:16px 0 22px;"></div>
+  <table>
+    <tr><th>Player</th><th>Funding / Scale</th><th>Where they lose</th></tr>
+    <tr><td class="k">Braintrust</td><td>Largest 2026 eval round</td><td>Scores tell you what broke. A human still fixes it.</td></tr>
+    <tr><td class="k">LangSmith</td><td>LangChain-native, enterprise</td><td>Locked to LangChain-shaped stacks. Observability-first, not cost-first.</td></tr>
+    <tr><td class="k">TruEra / Arize</td><td>Acquired / enterprise-scale</td><td>ML-era posture. Not built to move live GenAI traffic.</td></tr>
+    <tr><td class="k" style="color:#FBBF24">Portkey.ai</td><td><b>$15M Series A</b> · 500B+ tokens · 125M daily req · 24k orgs</td><td>Routing rules are <b>static and human-authored</b>. Fallbacks ≠ evidence-based promotion.</td></tr>
+    <tr><td class="k">Maxim AI</td><td><b>$3M seed</b> (Elevation)</td><td>Evals are a <b>destination</b>, not a control signal. No traffic control plane.</td></tr>
+    <tr><td class="k">Simplismart</td><td>$7M Series A · ~$20M Nvidia-led reported</td><td>Optimises <b>how</b> a model runs. Never asks <b>which</b> model should run.</td></tr>
+  </table>
+  <div class="foot"><span>Sources: Inc42, Entrackr, Elevation Capital, vendor disclosures</span><span>05</span></div>
+</div>
+
+<!-- 6 BOOTSTRAPPED -->
+<div class="slide">
+  <div class="eyebrow">The Bootstrapped Reality</div>
+  <h2>Stated plainly, so we don't pretend otherwise.</h2>
+  <div class="rule"></div>
+  <ul>
+    <li>We will lose <b>every</b> paid-search, conference-booth and content-volume fight. Portkey has 15 million reasons to win those.</li>
+    <li>We win on <b>architecture</b> and on <b>reps</b>. 100 surgical, technically-literate touches beat 100,000 impressions.</li>
+    <li>Our unfair advantages are exactly three: <b>the closed loop</b>, <b>air-gapped deployment</b>, and <b>a POC shipped the same week it is scoped</b>.</li>
+    <li>Corollary — and I mean this as a commitment: <b>zero top-of-funnel spend in the first 90 days.</b> Every rupee goes to data, tooling and POC engineering.</li>
+  </ul>
+  <div class="foot"><span>Divyam.AI — GTM Blueprint</span><span>06</span></div>
+</div>
+
+<!-- 7 WEDGE -->
+<div class="slide">
+  <div class="eyebrow">The Divyam Wedge</div>
+  <div class="quote">Everyone else measures quality.<br>Only Divyam lets quality <span style="color:var(--acc)">automatically authorise</span> a cheaper model.</div>
+  <div class="loop">
+    <div class="step"><div class="n">01 · BASELINE</div><div class="t">EvalMate</div><div class="d">Agentic workflow turns <b>your</b> examples into a structured rubric — not MMLU. The aligned judge distills to an <b>~8B reward model running on your own infrastructure.</b></div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">02 · ENFORCE</div><div class="t">Model Router</div><div class="d">Lightweight classifier routes every prompt across <b>100+ models</b> against your cost ceiling and quality floor. Trivial drops cheap; hard escalates to frontier.</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">03 · CLOSE THE LOOP</div><div class="t">Route → Eval → Optimize</div><div class="d">New model lands Tuesday. Benchmarked against your traffic overnight. <b>Promoted by morning — only if the rubric holds.</b></div></div>
+  </div>
+  <div class="sub" style="margin:28px 0 0;font-size:22px;color:#fff;font-weight:800;">Automated cost arbitrage without quality degradation. Zero human intervention.</div>
+  <div class="foot"><span>Divyam.AI — GTM Blueprint</span><span>07</span></div>
+</div>
+
+<!-- 8 PROOF -->
+<div class="slide">
+  <div class="glow"></div>
+  <div class="eyebrow">Proof — Not Positioning</div>
+  <h2>MakeMyTrip / Myra</h2>
+  <div class="rule"></div>
+  <div class="kpis" style="margin-bottom:34px;">
+    <div class="kpi"><div class="v">63%</div><div class="l">LLM cost reduction on a live production travel assistant</div></div>
+    <div class="kpi"><div class="v">0</div><div class="l">Quality loss against their own rubric</div></div>
+    <div class="kpi"><div class="v">1</div><div class="l">Reference logo that ends the "does this actually work" objection</div></div>
+  </div>
+  <ul>
+    <li>This is our single most valuable sales asset and it is <b>already public</b>. It leads every first call.</li>
+    <li>The framing that lands with a CTO: <b>"Your model choice is a decision you made once, nine months ago — and have been paying for every day since."</b></li>
+  </ul>
+  <div class="foot"><span>Source: divyam.ai/customers/makemytrip</span><span>08</span></div>
+</div>
+
+<!-- 9 BLOCKER 1 -->
+<div class="slide">
+  <div class="eyebrow">Blocker 01</div>
+  <h2>“You’re unfunded. I can’t put you in the production path.”</h2>
+  <div class="rule"></div>
+  <ul>
+    <li><b>Do not argue the balance sheet. Remove the dependency.</b></li>
+    <li>Lead with <b>air-gapped / privately hosted deployment</b>: router and the ~8B judge run inside their VPC. No traffic leaves. <b>Divyam going away tomorrow does not take their inference down.</b></li>
+    <li>De-risk commercially: <b>one workload, 30-day paid pilot</b>, success = a number (₹ saved at constant quality), monthly terms, exit clause.</li>
+    <li>Reframe: <b>“You are not betting your infra on us. You are renting an optimisation loop that runs on your own metal.”</b></li>
+  </ul>
+  <div class="foot"><span>Divyam.AI — GTM Blueprint</span><span>09</span></div>
+</div>
+
+<!-- 10 BLOCKER 2 -->
+<div class="slide">
+  <div class="eyebrow">Blocker 02</div>
+  <h2>“We already use Portkey / LangChain.”</h2>
+  <div class="rule"></div>
+  <ul>
+    <li>Never attack the gateway. <b>Concede it and reframe the category:</b> “Good — keep it. That’s your plumbing. I’m selling the decision layer above it.”</li>
+  </ul>
+  <div class="quote" style="border-color:var(--warn);font-size:27px;margin:6px 0 24px;">“Does your current gateway automatically benchmark DeepSeek against your own production data overnight — and switch your traffic by morning, without an engineer approving it?”</div>
+  <ul>
+    <li>The answer is <b>no</b>. Every incumbent needs a human to author the routing rule. <b>That gap is the sale.</b></li>
+    <li><span class="tag">Blocker 03 — anticipate it</span> <b>“Why won’t OpenAI or Bedrock just build this?”</b> → Providers have a structural conflict: <b>they don’t get paid to route you off their frontier model. Neutrality is the product.</b></li>
+  </ul>
+  <div class="foot"><span>Divyam.AI — GTM Blueprint</span><span>10</span></div>
+</div>
+
+<!-- 11 ICP -->
+<div class="slide">
+  <div class="eyebrow">Initial ICP — India</div>
+  <h2>High token volume × thin unit margin × AI already in production.</h2>
+  <div class="sub" style="margin-bottom:18px;">No greenfield. No pilots of curiosity.</div>
+  <table>
+    <tr><th>Account</th><th>Segment</th><th>The hook</th></tr>
+    <tr><td class="k">Swiggy / Zomato</td><td>Consumer tech</td><td>Route ~80% of trivial tier-1 support to Llama-class; reserve GPT-4-class for complex refunds. <b>Zomato already hit cost + latency walls scaling Zia on closed models — documented, live pain.</b></td></tr>
+    <tr><td class="k">Flipkart / Myntra</td><td>E-commerce</td><td>EvalMate auto-QAs millions of AI-generated catalogue descriptions against a merchandising rubric. <b>Sandeep's Flipkart tenure is the warm path in — use it for the meeting, not the pitch.</b></td></tr>
+    <tr><td class="k">Physics Wallah / upGrad</td><td>EdTech</td><td>Always-on AI tutors are token-hungry against low-ARPU subscriptions. Cost per learner is a <b>direct defence of contribution margin.</b></td></tr>
+    <tr><td class="k">Freshworks / Darwinbox</td><td>B2B SaaS</td><td>Native copilots turn 80%-margin SaaS into a pass-through of someone else's inference bill. <b>Strongest expansion account in the list.</b></td></tr>
+    <tr><td class="k">Cred / Groww</td><td>FinTech</td><td><b>Air-gapped deployment</b> for local evaluation of sensitive financial document parsing. Sovereignty opens the door; cost closes it — in that order.</td></tr>
+  </table>
+  <div class="sub" style="margin:20px 0 0;font-size:18px;"><b>Sequencing:</b> Flipkart + Freshworks first (warm intro, clearest margin math) → Swiggy/Zomato second (documented pain, hardest procurement) → EdTech + FinTech as parallel long-cycle builds.</div>
+  <div class="foot"><span>Sources: Together AI (Zomato Zia), Databricks (Swiggy)</span><span>11</span></div>
+</div>
+
+<!-- 12 DAYS 1-30 -->
+<div class="slide">
+  <div class="eyebrow">Execution · Days 1–30</div>
+  <h2>Map. Build. Hit the phones.</h2>
+  <div class="rule" style="margin:16px 0 22px;"></div>
+  <div class="cols">
+    <div class="card">
+      <h3>Personas</h3>
+      <ul>
+        <li><b>VP / Head of Platform Eng</b> — owns the bill, feels it monthly. <i>Economic buyer.</i></li>
+        <li><b>AI Infra / ML Platform Lead</b> — owns router and risk. <i>Technical champion; wins or kills it.</i></li>
+        <li><b>CTO</b> — owns the margin story to the board. <i>Air cover and signature.</i></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Build · Week 1–2</h3>
+      <ul>
+        <li><b>50 accounts → ~200 named contacts</b>, hand-verified. No purchased lists.</li>
+        <li>Cheap stack: inbox warm-up, Sales Nav, one sequencer, CRM. <b>Zero paid media.</b></li>
+        <li>Weaponise existing assets: MakeMyTrip 63%, the <i>model inertia</i> post. <b>Engineers forward technical content; they delete decks.</b></li>
+      </ul>
+    </div>
+    <div class="card warn">
+      <h3>Outbound · Week 2–4</h3>
+      <ul>
+        <li>Lead line: <b>“Cut your OpenAI inference bill by 40% this week without breaking your application.”</b></li>
+        <li>Every message carries <b>one falsifiable technical observation</b> about their stack. No “quick chat.”</li>
+        <li>5 touches / 12 days. <b>40 accounts and 200 contacts worked per week.</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Divyam.AI — GTM Blueprint</span><span>12</span></div>
+</div>
+
+<!-- 13 METRICS -->
+<div class="slide">
+  <div class="eyebrow">Accountability</div>
+  <h2>What you should hold me to.</h2>
+  <div class="rule"></div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">15</div><div class="l">Technical discovery calls booked<br><b>by Day 30</b></div></div>
+    <div class="kpi"><div class="v">6</div><div class="l">EvalMate rubric workshops run<br><b>by Day 30</b></div></div>
+    <div class="kpi"><div class="v">3</div><div class="l">Paid single-workload pilots scoped<br><b>by Day 30</b></div></div>
+    <div class="kpi"><div class="v">5</div><div class="l">ICP messaging variants tested<br><b>by Day 30</b></div></div>
+  </div>
+  <ul style="margin-top:34px;">
+    <li><b>D31–60:</b> convert pilots. One workload, measured ₹ saved at constant quality, success criteria signed <b>before</b> kickoff.</li>
+    <li><b>D61–90:</b> <b>3 closed logos</b>, one public case study, and a POC runbook the next AE can execute without me.</li>
+  </ul>
+  <div class="foot"><span>Divyam.AI — GTM Blueprint</span><span>13</span></div>
+</div>
+
+<!-- 14 ASK -->
+<div class="slide">
+  <div class="glow"></div>
+  <div class="eyebrow" style="color:var(--warn)">What I Need From You</div>
+  <h2>Three asks. All of them cheap.</h2>
+  <div class="rule" style="background:var(--warn)"></div>
+  <ul class="ask">
+    <li><b>Two warm Flipkart-network intros in week 1.</b> Founder-led warmth beats 500 cold emails.</li>
+    <li><b>Engineering time-boxed to 3 days per pilot.</b> POC velocity is our only structural advantage over funded competitors.</li>
+    <li><b>Permission to publish the cost-arbitrage numbers.</b> In DevTools, benchmarks are distribution — and they are free.</li>
+  </ul>
+  <div class="quote" style="margin-top:34px;font-size:27px;">We don't need Portkey's budget.<br>We need <span style="color:var(--acc)">their customers' next invoice.</span></div>
+  <div class="foot"><span>[My Name] · Founding AE Candidate</span><span>14</span></div>
+</div>
+
+</body>
+</html>
