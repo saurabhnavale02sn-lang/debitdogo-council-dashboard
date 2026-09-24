@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Divyam.AI — 90-Day Execution Plan</title>
+<style>
+  @page { size: A4; margin: 17mm 15mm 16mm; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --ink:#0F1826; --body:#33415C; --mut:#6B7790; --acc:#0A6E4E; --acc-soft:#E6F2ED;
+    --blue:#1F3A5F; --amber:#A65B00; --amber-soft:#FBF3E8; --line:#E1E6EC; --line2:#C9D2DC;
+    --panel:#F5F7F9;
+  }
+  body{ font-family:"Liberation Sans",Helvetica,Arial,sans-serif; color:var(--body);
+    font-size:10.2pt; line-height:1.5; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  h1{ font-family:"Bitstream Charter",Charter,Georgia,serif; font-size:27pt; line-height:1.1;
+    letter-spacing:-.02em; color:var(--ink); }
+  h2{ font-family:"Bitstream Charter",Charter,Georgia,serif; font-size:15pt; color:var(--ink);
+    margin:20pt 0 7pt; padding-bottom:5pt; border-bottom:1.5px solid var(--ink);
+    break-after:avoid; letter-spacing:-.01em; }
+  h3{ font-size:9pt; letter-spacing:.14em; text-transform:uppercase; color:var(--acc);
+    margin:14pt 0 6pt; break-after:avoid; }
+  p{ margin-bottom:7pt; max-width:none; }
+  b,strong{ color:var(--ink); font-weight:700; }
+  em{ color:var(--mut); }
+  a{ color:var(--acc); }
+  ul{ list-style:none; margin:0 0 8pt; }
+  li{ position:relative; padding-left:13pt; margin-bottom:5pt; }
+  li:before{ content:""; position:absolute; left:0; top:5.5pt; width:4pt; height:4pt;
+    border:1.2px solid var(--acc); border-radius:50%; }
+  table{ width:100%; border-collapse:collapse; font-size:8.8pt; margin:8pt 0 10pt;
+    break-inside:avoid; }
+  th{ text-align:left; font-size:7.4pt; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--mut); padding:0 7pt 5pt 0; border-bottom:1.2px solid var(--ink); font-weight:700; }
+  td{ padding:6pt 7pt 6pt 0; border-bottom:.8px solid var(--line); vertical-align:top; line-height:1.38; }
+  td.k{ color:var(--ink); font-weight:700; }
+  tr.tot td{ border-top:1.2px solid var(--ink); border-bottom:none; color:var(--ink); font-weight:700; }
+  .avoid{ break-inside:avoid; }
+  .cover{ border-bottom:3px solid var(--acc); padding-bottom:14pt; margin-bottom:6pt; }
+  .kick{ font-size:8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--acc);
+    font-weight:700; margin-bottom:9pt; }
+  .sub{ font-size:11pt; color:var(--mut); margin-top:9pt; }
+  .byline{ font-size:8.5pt; color:var(--mut); margin-top:10pt; letter-spacing:.04em; }
+  .note{ background:var(--panel); border-left:3px solid var(--line2); padding:8pt 11pt;
+    font-size:8.8pt; color:var(--body); margin:9pt 0; break-inside:avoid; }
+  .flag{ background:var(--amber-soft); border-left:3px solid var(--amber); padding:8pt 11pt;
+    font-size:9pt; margin:9pt 0; break-inside:avoid; }
+  .flag b{ color:var(--amber); }
+  .win{ background:var(--acc-soft); border-left:3px solid var(--acc); padding:8pt 11pt;
+    font-size:9pt; margin:9pt 0; break-inside:avoid; }
+
+  /* ---- diagram primitives ---- */
+  .fig{ border:1px solid var(--line); border-radius:3px; padding:14pt 13pt 11pt;
+    margin:10pt 0 12pt; break-inside:avoid; background:#fff; }
+  .figcap{ font-size:7.4pt; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
+    font-weight:700; margin-bottom:11pt; }
+  .row{ display:flex; align-items:stretch; gap:6pt; }
+  .row.c{ align-items:center; }
+  .bx{ flex:1; border:1px solid var(--line2); border-radius:3px; padding:7pt 8pt;
+    font-size:8pt; line-height:1.3; background:#fff; }
+  .bx .t{ font-weight:700; color:var(--ink); display:block; margin-bottom:2pt; }
+  .bx .s{ color:var(--mut); font-size:7.4pt; }
+  .bx.dec{ background:#FAFBFC; border-style:dashed; }
+  .bx.go{ background:var(--acc-soft); border-color:#B9DCCC; }
+  .bx.stop{ background:var(--amber-soft); border-color:#EBD9BD; }
+  .bx.dk{ background:var(--ink); border-color:var(--ink); }
+  .bx.dk .t{ color:#fff; } .bx.dk .s{ color:#A9B6C9; }
+  .ar{ align-self:center; color:var(--line2); font-size:11pt; font-weight:700; padding:0 1pt; }
+  .arv{ text-align:center; color:var(--line2); font-size:11pt; font-weight:700; line-height:1; margin:4pt 0; }
+  .lbl{ font-size:6.8pt; letter-spacing:.08em; text-transform:uppercase; color:var(--acc);
+    font-weight:700; text-align:center; margin:3pt 0 1pt; }
+  .lbl.w{ color:var(--amber); }
+
+  /* gantt */
+  .gantt{ font-size:7.4pt; }
+  .gr{ display:flex; align-items:center; height:15pt; }
+  .gname{ width:138pt; flex:none; color:var(--body); padding-right:6pt; font-size:7.6pt; }
+  .gtrack{ flex:1; position:relative; height:9pt; background:linear-gradient(90deg,
+      var(--line) 0 .6pt, transparent .6pt) repeat-x; background-size:7.69% 100%;
+      border-bottom:.6px solid #F0F3F6; }
+  .gbar{ position:absolute; top:1pt; height:7pt; border-radius:1.5pt; background:var(--acc); }
+  .gbar.b2{ background:#5B93B8; } .gbar.b3{ background:#9AA9BF; } .gbar.b4{ background:var(--amber); }
+  .gms{ position:absolute; top:-1pt; width:0; height:0; border-left:3.5pt solid transparent;
+    border-right:3.5pt solid transparent; border-bottom:6pt solid var(--ink); }
+  .ghead{ display:flex; font-size:6.8pt; color:var(--mut); letter-spacing:.06em;
+    text-transform:uppercase; margin-bottom:3pt; }
+  .gsec{ font-size:7pt; letter-spacing:.12em; text-transform:uppercase; color:var(--acc);
+    font-weight:700; margin:7pt 0 3pt; padding-left:0; }
+
+  /* funnel */
+  .fun{ display:flex; align-items:stretch; gap:5pt; }
+  .fst{ flex:1; text-align:center; border:1px solid var(--line2); border-radius:3px; padding:8pt 4pt; }
+  .fst .v{ font-family:"Bitstream Charter",Charter,Georgia,serif; font-size:16pt;
+    font-weight:700; color:var(--ink); line-height:1; }
+  .fst .l{ font-size:7pt; color:var(--mut); margin-top:4pt; line-height:1.3; }
+  .fst.w{ background:var(--acc-soft); border-color:#B9DCCC; } .fst.w .v{ color:var(--acc); }
+
+  /* swimlane */
+  .lane{ display:flex; gap:0; font-size:7.6pt; }
+  .lcol{ flex:1; border-right:1px solid var(--line); padding:0 6pt; }
+  .lcol:last-child{ border-right:none; }
+  .lhead{ font-size:6.8pt; letter-spacing:.1em; text-transform:uppercase; color:var(--acc);
+    font-weight:700; padding-bottom:4pt; border-bottom:1.2px solid var(--ink); margin-bottom:6pt; }
+  .lstep{ background:var(--panel); border:1px solid var(--line); border-radius:2px;
+    padding:4pt 5pt; margin-bottom:4pt; line-height:1.3; }
+  .lstep b{ display:block; font-size:6.6pt; color:var(--acc); letter-spacing:.08em; margin-bottom:1pt; }
+  .lspace{ height:22pt; }
+
+  /* week cards */
+  .wk{ display:flex; gap:5pt; }
+  .wkc{ flex:1; border:1px solid var(--line); border-radius:3px; padding:7pt 7pt 8pt; font-size:7.4pt; }
+  .wkc .d{ font-size:7pt; letter-spacing:.1em; text-transform:uppercase; color:var(--acc);
+    font-weight:700; margin-bottom:5pt; padding-bottom:3pt; border-bottom:1px solid var(--line); }
+  .wkc div.i{ margin-bottom:4pt; line-height:1.3; color:var(--body); }
+  .wkc.sell{ background:var(--acc-soft); border-color:#B9DCCC; }
+  .foot{ position:fixed; bottom:-11mm; left:0; right:0; font-size:6.8pt; color:#A6B0BE;
+    letter-spacing:.1em; text-transform:uppercase; border-top:.8px solid var(--line);
+    padding-top:4pt; display:flex; justify-content:space-between; }
+</style></head>
+<body>
+
+<div class="foot"><span>Divyam.AI · 90-Day Execution Plan</span><span>Saurabh Navale · 24 Sep 2026</span></div>
+
+<div class="cover">
+  <div class="kick">Founding Account Executive · India</div>
+  <h1>90-Day Execution Plan</h1>
+  <div class="sub">Outbound machine, tool stack, weekly workflows, and the numbers I'd report.</div>
+  <div class="byline">Saurabh Navale · 24 September 2026 · Companion to the GTM Blueprint and Sales Playbook</div>
+</div>
+<div class="note"><b>Day 1 is assumed to be 1 October 2026.</b> Shift the dates, not the sequence. Every diagram in this document is reproducible in Notion as a Mermaid block; the source markdown carries the code.</div>
+
+<h2>1. The Whole Machine</h2>
+<div class="fig">
+  <div class="figcap">Figure 1 — Account to closed logo</div>
+  <div class="row c">
+    <div class="bx"><span class="t">50 target accounts</span><span class="s">AI in production · thin unit margin · scale</span></div>
+    <div class="ar">→</div>
+    <div class="bx"><span class="t">Enrich + verify</span><span class="s">Apollo · Sales Navigator · manual check</span></div>
+    <div class="ar">→</div>
+    <div class="bx dec"><span class="t">Warm path?</span><span class="s">Happenstance network search</span></div>
+  </div>
+  <div class="arv">↓</div>
+  <div class="row">
+    <div style="flex:1"><div class="lbl">Yes · ~20%</div>
+      <div class="bx go"><span class="t">Intro request</span><span class="s">Via Sandeep or a mutual. Never automated.</span></div></div>
+    <div style="flex:1"><div class="lbl">No · Tier 1 · 15 accounts</div>
+      <div class="bx"><span class="t">Hand-written email</span><span class="s">Modelled spend estimate in email one</span></div></div>
+    <div style="flex:1"><div class="lbl">No · Tier 2 · 35 accounts</div>
+      <div class="bx"><span class="t">SalesRobot + Smartlead</span><span class="s">LinkedIn and email sequences</span></div></div>
+  </div>
+  <div class="arv">↓</div>
+  <div class="row c">
+    <div class="bx dec" style="flex:1.3"><span class="t">Qualified?</span><span class="s">AI in prod · spend over $10k/mo · named workload · exec sponsor</span></div>
+    <div class="ar">→</div>
+    <div class="bx stop" style="flex:.9"><span class="t">Disqualify</span><span class="s">Nurture list · one benchmark a month</span></div>
+  </div>
+  <div class="arv">↓</div>
+  <div class="row c">
+    <div class="bx"><span class="t">Discovery · 30 min</span><span class="s">Spend quantified, workload named</span></div>
+    <div class="ar">→</div>
+    <div class="bx"><span class="t">Technical deep-dive</span><span class="s">Infra lead states the quality bar</span></div>
+    <div class="ar">→</div>
+    <div class="bx"><span class="t">Pilot signed</span><span class="s">One workload, one number</span></div>
+    <div class="ar">→</div>
+    <div class="bx dk"><span class="t">Closed</span><span class="s">Champion presents the saving</span></div>
+  </div>
+</div>
+<div class="win"><b>The design decision:</b> the warm path is checked <b>before</b> any cold sequence runs. A Happenstance hit converts several times better than the best cold email I can write, and it costs one query.</div>
+
+<h2>2. Tool Stack and Budget</h2>
+<p>Bootstrapped constraint: <b>no ad spend, no data-vendor contracts.</b> Everything below is month-to-month and cancellable.</p>
+<table>
+  <tr><th style="width:80pt">Tool</th><th>Job in the motion</th><th style="width:56pt">Cost / month</th><th style="width:130pt">Why this one</th></tr>
+  <tr><td class="k">Happenstance</td><td>Network search — "who do we know at Swiggy in platform engineering?" Warm-path discovery across Gmail, LinkedIn and calendar</td><td class="k">$30 / user</td><td>Checked first on every account. Warm beats cold at any volume. SOC 2, API access</td></tr>
+  <tr><td class="k">SalesRobot</td><td>LinkedIn automation for Tier 2 — connection and follow-up sequences, AI icebreakers from recent posts, mini-CRM</td><td class="k">$59–99</td><td>Safe-mode throttling and adaptive limits. A restricted account costs more than the subscription</td></tr>
+  <tr><td class="k">Smartlead</td><td>Cold email infrastructure — unlimited inboxes, unlimited warmup, rotation across domains</td><td class="k">$39–94</td><td>Unlimited mailboxes on every tier is the whole reason. Warmup included</td></tr>
+  <tr><td class="k">Sales Navigator</td><td>Account and persona mapping, trigger events, hiring signals</td><td class="k">~$99</td><td>Non-negotiable for Indian platform-engineering orgs — org charts aren't in any database</td></tr>
+  <tr><td class="k">Apollo</td><td>Contact discovery and enrichment baseline</td><td class="k">$49–79</td><td>Start here; assume patchy India coverage and verify manually</td></tr>
+  <tr><td class="k">Domains + inboxes</td><td>2 domains × 3 inboxes. The primary domain never sends cold</td><td class="k">~$15</td><td>Reputation firewall</td></tr>
+  <tr><td class="k">Verification</td><td>Bounce control before every send</td><td class="k">~$20</td><td>Above 3% bounce, deliverability collapses</td></tr>
+  <tr><td class="k">CRM</td><td>HubSpot free tier or Attio</td><td class="k">$0–29</td><td>Stages and required fields matter more than the logo</td></tr>
+  <tr class="tot"><td>Total</td><td>Against a ₹0 media budget</td><td>$320–465<br>₹27k–39k</td><td></td></tr>
+</table>
+<div class="note"><b>Deliberate omission —</b> Clay at $185+/month is the obvious upgrade for waterfall enrichment. I'd defer it to month 3, and only if manual verification proves to be the bottleneck. At 200 contacts a month, my time is cheaper than the subscription.</div>
+
+<h2>3. Channel Workflows</h2>
+<h3>3.1 Warm path first — Happenstance</h3>
+<div class="fig">
+  <div class="figcap">Figure 2 — Warm-path routing</div>
+  <div class="row c">
+    <div class="bx" style="flex:.8"><span class="t">New account</span><span class="s">Added to the list</span></div>
+    <div class="ar">→</div>
+    <div class="bx dec" style="flex:.9"><span class="t">Happenstance query</span><span class="s">Role + company</span></div>
+    <div class="ar">→</div>
+    <div style="flex:2">
+      <div class="row" style="gap:4pt">
+        <div class="bx go" style="padding:5pt 6pt"><span class="t">Direct, 1st degree</span><span class="s">Personal message. No automation, ever</span></div>
+        <div class="bx go" style="padding:5pt 6pt"><span class="t">2nd via Sandeep</span><span class="s">Intro drafted for him to forward</span></div>
+      </div>
+      <div class="row" style="gap:4pt;margin-top:4pt">
+        <div class="bx go" style="padding:5pt 6pt"><span class="t">2nd via my network</span><span class="s">Ask mutual for a forwardable intro</span></div>
+        <div class="bx" style="padding:5pt 6pt"><span class="t">No path</span><span class="s">Cold sequence, Tier 1 or 2</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<p><b>Rule:</b> a Happenstance hit never enters an automated sequence. Burning a warm path with a templated message is the most expensive mistake in this plan.</p>
+<div class="win"><b>Sandeep's ask, made concrete:</b> I'd run the network query across all 50 accounts in week 1, then bring a <b>ranked list of ~10 intro requests with the message pre-drafted</b>. His cost is forwarding an email, not thinking of names.</div>
+
+<h3>3.2 LinkedIn — SalesRobot, Tier 2</h3>
+<table>
+  <tr><th style="width:28pt">Step</th><th style="width:60pt">Day</th><th>Action</th><th style="width:78pt">Ceiling</th></tr>
+  <tr><td class="k">1</td><td>D1</td><td>Connection request, <b>no note</b> for cold profiles</td><td class="k">20–25 / day</td></tr>
+  <tr><td class="k">2</td><td>D3 after accept</td><td>Value message — one observation about their AI feature. <b>No ask</b></td><td>—</td></tr>
+  <tr><td class="k">3</td><td>D6</td><td>The disqualifying question</td><td>—</td></tr>
+  <tr><td class="k">4</td><td>D10</td><td>Artifact — MakeMyTrip teardown or a published benchmark</td><td>—</td></tr>
+  <tr><td class="k">5</td><td>D14</td><td>Soft close, or exit to nurture</td><td>—</td></tr>
+</table>
+<div class="flag"><b>Safety discipline.</b> Stay at 20–25 connects a day even though the tool allows more. Warm the account for two weeks before automating. Never run SalesRobot and manual outreach on the same profile on the same day. <b>A restricted profile costs a month of pipeline.</b></div>
+<p><b>Where AI personalisation helps, and where it doesn't:</b> SalesRobot's icebreakers drawn from recent posts are fine for step 1. Steps 2 and 3 carry a technical claim and get written by me — an AI icebreaker that misreads an engineering post is worse than no personalisation at all.</p>
+
+<h3>3.3 Email — Smartlead</h3>
+<div class="fig">
+  <div class="figcap">Figure 3 — Sending infrastructure and health loop</div>
+  <div class="row c">
+    <div class="bx"><span class="t">2 domains</span><span class="s">3 inboxes each</span></div><div class="ar">→</div>
+    <div class="bx"><span class="t">Warmup</span><span class="s">14–21 days, automatic</span></div><div class="ar">→</div>
+    <div class="bx"><span class="t">Ramp</span><span class="s">10 / inbox / day, week 1</span></div><div class="ar">→</div>
+    <div class="bx go"><span class="t">Steady state</span><span class="s">30–40 / inbox / day</span></div><div class="ar">→</div>
+    <div class="bx dec"><span class="t">Weekly health check</span><span class="s">Bounce above 3% or reply drop → pause, re-warm, re-verify</span></div>
+  </div>
+</div>
+<p>Capacity at steady state is <b>6 inboxes × 35/day ≈ 200 sends a day</b> — far beyond what 50 accounts need. The constraint is deliberately list quality, not send volume.</p>
+
+<h3>3.4 Tier 1 — no automation at all</h3>
+<p>Fifteen accounts. Hand-written, one at a time, with a modelled inference-spend estimate in the first email. Roughly 25 minutes each. <b>These are the accounts that become the case studies.</b></p>
+
+<h2>4. Weekly Operating Rhythm</h2>
+<div class="fig">
+  <div class="figcap">Figure 4 — The week, blocked</div>
+  <div class="wk">
+    <div class="wkc"><div class="d">Mon · Build</div>
+      <div class="i"><b>08:00–11:00</b> Prospecting — new accounts, Tier-1 writing</div>
+      <div class="i"><b>11:00–12:00</b> Sequence touches</div>
+      <div class="i"><b>PM</b> Warm-path queries, intro asks</div></div>
+    <div class="wkc sell"><div class="d">Tue · Sell</div>
+      <div class="i"><b>AM</b> Follow-ups and replies</div>
+      <div class="i"><b>14:00–18:00</b> Discovery and technical deep-dives</div></div>
+    <div class="wkc"><div class="d">Wed · Build</div>
+      <div class="i"><b>08:00–11:00</b> Prospecting</div>
+      <div class="i"><b>PM</b> Pilot check-ins, proposals</div></div>
+    <div class="wkc sell"><div class="d">Thu · Sell</div>
+      <div class="i"><b>14:00–18:00</b> Calls and pilot readouts</div></div>
+    <div class="wkc"><div class="d">Fri · Sharpen</div>
+      <div class="i"><b>AM</b> Pilot engineering sync</div>
+      <div class="i"><b>PM</b> CRM true-up, forecast, one technical post, benchmark work</div></div>
+  </div>
+</div>
+<p><b>Daily floor:</b> 25 touches · 5 new accounts researched · inbound answered inside 4 working hours · no deal left in a stage past its clock. <b>Prospecting hours are meeting-free by policy</b> — they are the only hours that build next month.</p>
+
+<h2>5. The 90 Days</h2>
+<div class="fig">
+  <div class="figcap">Figure 5 — Schedule · Day 1 = 1 October 2026</div>
+  <div class="gantt">
+    <div class="ghead"><span style="width:138pt;flex:none"></span>
+      <span style="flex:1;display:flex;justify-content:space-between">
+      <span>W1</span><span>W3</span><span>W5</span><span>W7</span><span>W9</span><span>W11</span><span>W13</span></span></div>
+    <div class="gsec">Foundation</div>
+    <div class="gr"><div class="gname">Domains + inbox warmup</div><div class="gtrack"><div class="gbar" style="left:0%;width:23%"></div></div></div>
+    <div class="gr"><div class="gname">Stack live, CRM configured</div><div class="gtrack"><div class="gbar" style="left:0%;width:8%"></div></div></div>
+    <div class="gr"><div class="gname">50 accounts, 200 contacts</div><div class="gtrack"><div class="gbar" style="left:0%;width:11%"></div></div></div>
+    <div class="gr"><div class="gname">Happenstance warm-path map</div><div class="gtrack"><div class="gbar" style="left:4%;width:8%"></div></div></div>
+    <div class="gsec">Outbound</div>
+    <div class="gr"><div class="gname">Tier-1 hand-written wave</div><div class="gtrack"><div class="gbar b2" style="left:8%;width:15%"></div></div></div>
+    <div class="gr"><div class="gname">LinkedIn sequences live</div><div class="gtrack"><div class="gbar b2" style="left:12%;width:88%"></div></div></div>
+    <div class="gr"><div class="gname">Email sequences at volume</div><div class="gtrack"><div class="gbar b2" style="left:23%;width:77%"></div></div></div>
+    <div class="gsec">Selling</div>
+    <div class="gr"><div class="gname">Discovery calls</div><div class="gtrack"><div class="gbar" style="left:14%;width:86%"></div></div></div>
+    <div class="gr"><div class="gname">Technical deep-dives</div><div class="gtrack"><div class="gbar" style="left:22%;width:78%"></div></div></div>
+    <div class="gr"><div class="gname">Pilots scoped and signed</div><div class="gtrack"><div class="gbar" style="left:34%;width:66%"></div></div></div>
+    <div class="gr"><div class="gname">Pilots running</div><div class="gtrack"><div class="gbar" style="left:42%;width:58%"></div></div></div>
+    <div class="gr"><div class="gname">Business cases and close</div><div class="gtrack"><div class="gbar" style="left:67%;width:33%"></div></div></div>
+    <div class="gsec">Inbound</div>
+    <div class="gr"><div class="gname">Free cost-audit page live</div><div class="gtrack"><div class="gbar b3" style="left:16%;width:11%"></div></div></div>
+    <div class="gr"><div class="gname">Benchmark report one</div><div class="gtrack"><div class="gbar b3" style="left:39%;width:23%"></div></div></div>
+    <div class="gr"><div class="gname">OSS calculator + SEO pages</div><div class="gtrack"><div class="gbar b3" style="left:55%;width:33%"></div></div></div>
+    <div class="gsec">Reviews</div>
+    <div class="gr"><div class="gname">Day 30 / 60 / 90 reviews</div><div class="gtrack">
+      <div class="gms" style="left:32%"></div><div class="gms" style="left:65%"></div><div class="gms" style="left:98%"></div></div></div>
+  </div>
+</div>
+
+<h3>Week by week</h3>
+<table>
+  <tr><th style="width:26pt">Week</th><th style="width:72pt">Focus</th><th>Output by Friday</th><th style="width:88pt">Leading metric</th></tr>
+  <tr><td class="k">1</td><td>Stack + list</td><td>Tools live, CRM stages configured, domains warming, 50 accounts identified</td><td>50 accounts, 0 sends</td></tr>
+  <tr><td class="k">2</td><td>Data + warm paths</td><td>200 contacts verified and tiered; Happenstance map complete; <b>10 pre-drafted intro requests to Sandeep</b></td><td>200 contacts</td></tr>
+  <tr><td class="k">3</td><td>Tier-1 wave</td><td>15 hand-written emails with spend models; LinkedIn sequences start</td><td>First replies</td></tr>
+  <tr><td class="k">4</td><td>Volume on</td><td>Email sequences live post-warmup; all five touches running</td><td class="k">≥5 discovery calls</td></tr>
+  <tr><td class="k">5</td><td>Convert</td><td>Technical deep-dives; first pilot scoping docs drafted</td><td>2 deep-dives</td></tr>
+  <tr><td class="k">6</td><td>First pilots</td><td><b>1–2 pilots signed</b>; cost-audit page live</td><td class="k">1 signed pilot</td></tr>
+  <tr><td class="k">7</td><td>Run + refine</td><td>Baselines captured; ICP tightened on evidence — double down on the segment that replies</td><td>Pilot baseline set</td></tr>
+  <tr><td class="k">8</td><td>Second wave</td><td>Refreshed list for responding segments; benchmark one drafted</td><td>15 total discoveries</td></tr>
+  <tr><td class="k">9</td><td>Pilot readouts</td><td>First ₹-saved number produced; champion prepped to present internally</td><td class="k">First verified saving</td></tr>
+  <tr><td class="k">10</td><td>Business case</td><td>Procurement and security started on pilot one; benchmark one published</td><td>Security review open</td></tr>
+  <tr><td class="k">11</td><td>Close motion</td><td>Pricing negotiated against a real number; pilots two and three in readout</td><td>First close in sight</td></tr>
+  <tr><td class="k">12</td><td>Close</td><td><b>First logo signed</b>; case study drafted</td><td class="k">1 logo</td></tr>
+  <tr><td class="k">13</td><td>Systematise</td><td>POC runbook written; Q2 pipeline built; three logos, or a clear read on why not</td><td class="k">3 logos</td></tr>
+</table>
+
+<h2>6. Funnel Math, With Capacity</h2>
+<div class="fig">
+  <div class="figcap">Figure 6 — Monthly outbound engine</div>
+  <div class="fun">
+    <div class="fst"><div class="v">200</div><div class="l">contacts worked</div></div>
+    <div class="ar">→</div>
+    <div class="fst"><div class="v">~20</div><div class="l">replies · 10%</div></div>
+    <div class="ar">→</div>
+    <div class="fst"><div class="v">~10</div><div class="l">discoveries · 50%</div></div>
+    <div class="ar">→</div>
+    <div class="fst"><div class="v">~4</div><div class="l">pilots scoped · 40%</div></div>
+    <div class="ar">→</div>
+    <div class="fst w"><div class="v">1</div><div class="l">closed logo · 25%</div></div>
+  </div>
+</div>
+<table>
+  <tr><th style="width:86pt">Stage</th><th style="width:48pt">Monthly</th><th style="width:48pt">90-day</th><th>Assumption being made</th></tr>
+  <tr><td class="k">Contacts worked</td><td>200</td><td>600</td><td>50 accounts refreshed monthly</td></tr>
+  <tr><td class="k">Replies</td><td>~20</td><td>~60</td><td>10% — achievable only because Tier 1 is hand-written</td></tr>
+  <tr><td class="k">Discoveries</td><td>~10</td><td>~30</td><td>50% reply-to-meeting, because the reply is to a question, not a pitch</td></tr>
+  <tr><td class="k">Pilots scoped</td><td>~4</td><td>~12</td><td>40% — gated by engineering capacity, not by demand</td></tr>
+  <tr class="tot"><td>Closed</td><td>~1</td><td>3</td><td>25% pilot-to-close, conservative because the pilot produces a number</td></tr>
+</table>
+<div class="flag"><b>Where this plan breaks first — pilot capacity.</b> If engineering can support only two concurrent pilots, the honest 90-day number is two logos, not three. I'd rather pace outbound than stack up pilots we can't service. <b>That is question 2 for you.</b></div>
+
+<h2>7. Pilot Workflow — Who Does What</h2>
+<div class="fig">
+  <div class="figcap">Figure 7 — 30-day pilot, by owner</div>
+  <div class="lane">
+    <div class="lcol"><div class="lhead">Me · AE</div>
+      <div class="lstep"><b>Day 1–3</b>Pilot one-pager: workload, metric, dates</div>
+      <div class="lspace"></div>
+      <div class="lstep"><b>Day 8–12</b>Rubric review with champion</div>
+      <div class="lstep"><b>Weekly · 20 min</b>Readout: savings to date, quality delta</div>
+      <div class="lstep"><b>Day 26–30</b>Business case pack, in their format</div></div>
+    <div class="lcol"><div class="lhead">Champion · Infra Lead</div>
+      <div class="lstep"><b>Day 3</b>Signs scope, names eng contact</div>
+      <div class="lstep"><b>Day 4</b>Provides production traffic sample</div>
+      <div class="lstep"><b>Day 12</b>Signs off the quality bar</div>
+      <div class="lspace"></div>
+      <div class="lstep"><b>Day 30</b>Presents to the economic buyer</div></div>
+    <div class="lcol"><div class="lhead">Divyam Engineering</div>
+      <div class="lspace"></div>
+      <div class="lstep"><b>Day 4–7</b>Baseline cost and quality captured</div>
+      <div class="lstep"><b>Day 13–25</b>Router live, traffic shifted progressively</div>
+      <div class="lstep"><b>Day 26</b>Final numbers</div></div>
+    <div class="lcol"><div class="lhead">Economic Buyer</div>
+      <div class="lspace"></div><div class="lspace"></div>
+      <div class="lstep" style="background:var(--acc-soft);border-color:#B9DCCC"><b>Day 30+</b>Hears the number from their own engineer, then opens the commercial conversation</div></div>
+  </div>
+</div>
+<div class="win"><b>The rule that makes this work:</b> the champion presents, not me. A number defended by their own engineer survives a budget meeting. A vendor deck does not.</div>
+<p><b>Success metric wording that works:</b> <em>"≥30% reduction in blended cost per request on [workload], with rubric score within 2% of baseline, measured over 14 days of production traffic."</em></p>
+
+<h2>8. Risk Register</h2>
+<table>
+  <tr><th style="width:86pt">Risk</th><th style="width:130pt">Signal it's happening</th><th>Mitigation, pre-planned</th></tr>
+  <tr><td class="k">LinkedIn restriction</td><td>Warning, or invites stop landing</td><td>Stay at 20–25/day; warm two weeks; pause automation for seven days</td></tr>
+  <tr><td class="k">Domain burn</td><td>Bounce above 3%, replies fall off a cliff</td><td>Secondary domains only; verify before every send; re-warm on trigger</td></tr>
+  <tr><td class="k">India data quality</td><td>Apollo returns stale titles for platform-engineering roles</td><td>Sales Navigator as source of truth; Tier 1 verified 100%, Tier 2 sampled</td></tr>
+  <tr><td class="k">Pilot capacity ceiling</td><td>More pilots scoped than engineering can staff</td><td>Pace outbound; queue pilots with dates rather than starting them badly</td></tr>
+  <tr><td class="k">BFSI cycle length</td><td>Security review runs past six weeks</td><td>Start the security questionnaire at pilot kickoff, not at close</td></tr>
+  <tr><td class="k">No warm paths</td><td>Happenstance returns nothing across the list</td><td>Fall back to community-led credibility — benchmarks and OSS, started in parallel anyway</td></tr>
+  <tr><td class="k">Wrong ICP</td><td>Replies cluster in a segment I ranked low</td><td>Week 7 is the scheduled pivot point, decided on reply data rather than instinct</td></tr>
+</table>
+
+<h2>9. What I'd Show You at Each Review</h2>
+<table>
+  <tr><th style="width:56pt">Review</th><th>The artifact</th><th style="width:150pt">The question I'd expect</th></tr>
+  <tr><td class="k">Day 30</td><td>Account map, reply rate by segment and persona, five or more discoveries booked, warm-path results</td><td>"Is the message landing, and with whom?"</td></tr>
+  <tr><td class="k">Day 60</td><td>Three pilots running with signed scopes, first baseline numbers, ICP narrowed to two segments</td><td>"Are the pilots producing numbers, or activity?"</td></tr>
+  <tr><td class="k">Day 90</td><td>Three logos, one case study, POC runbook, Q2 pipeline, pricing validated in three real negotiations</td><td>"Can the next AE run this without you?"</td></tr>
+</table>
+<div class="win"><b>The one number I'd put on the wall:</b> accounts where I can state their monthly inference spend. Everything downstream follows it — it is the difference between a pipeline and a list.</div>
+
+<h2>The Six Questions, Still Open</h2>
+<table>
+  <tr><td class="k" style="width:78pt">01 · Pricing</td><td>Share of verified savings, platform fee, or per-token? It sets ACV and who is in the room.</td></tr>
+  <tr><td class="k">02 · Capacity</td><td>How many concurrent pilots can engineering genuinely support? <b>This plan's ceiling.</b></td></tr>
+  <tr><td class="k">03 · Product</td><td>Does the router work per-step inside agent workflows, or only per-prompt?</td></tr>
+  <tr><td class="k">04 · Trust</td><td>Security questionnaire pack or SOC 2 path — build, buy, or route around it with air-gap?</td></tr>
+  <tr><td class="k">05 · Moat</td><td>When Portkey ships evidence-based routing, what still can't they copy?</td></tr>
+  <tr><td class="k">06 · Win</td><td>At Day 90 — logos, revenue, or a repeatable motion? Your priority sets mine.</td></tr>
+</table>
+
+</body></html>
