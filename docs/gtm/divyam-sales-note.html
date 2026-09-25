@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><title>Divyam.AI — Sales Note</title>
 <style>
-  @page { size:A4; margin:14mm 14mm 13mm; }
+  @page { size:A4; margin:12mm 13mm 11mm; }
   *{ margin:0; padding:0; box-sizing:border-box; }
   :root{
     --ink:#0F1826; --body:#33415C; --mut:#6B7790; --acc:#0A6E4E; --acc-soft:#E6F2ED;
@@ -9,20 +9,20 @@
     --line:#E1E6EC; --line2:#C9D2DC; --panel:#F6F8FA;
   }
   body{ font-family:"Liberation Sans",Helvetica,Arial,sans-serif; color:var(--body);
-    font-size:9.6pt; line-height:1.42; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  h1{ font-family:"Bitstream Charter",Charter,Georgia,serif; font-size:24pt; line-height:1.08;
+    font-size:9.2pt; line-height:1.38; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  h1{ font-family:"Bitstream Charter",Charter,Georgia,serif; font-size:22pt; line-height:1.08;
     letter-spacing:-.02em; color:var(--ink); }
   h2{ font-family:"Bitstream Charter",Charter,Georgia,serif; font-size:13.5pt; color:var(--ink);
-    margin:14pt 0 6pt; padding-bottom:4pt; border-bottom:1.4px solid var(--ink);
+    margin:11pt 0 5pt; padding-bottom:4pt; border-bottom:1.4px solid var(--ink);
     break-after:avoid; letter-spacing:-.01em; }
   h2 .n{ color:var(--acc); font-size:10pt; margin-right:6pt; }
   p{ margin-bottom:5pt; }
   b,strong{ color:var(--ink); font-weight:700; }
   ul{ list-style:none; }
-  li{ position:relative; padding-left:12pt; margin-bottom:3.5pt; }
+  li{ position:relative; padding-left:12pt; margin-bottom:3pt; }
   li:before{ content:""; position:absolute; left:0; top:4.6pt; width:3.6pt; height:3.6pt;
     border:1.2px solid var(--acc); border-radius:50%; }
-  .cover{ border-bottom:3px solid var(--acc); padding-bottom:11pt; margin-bottom:10pt; }
+  .cover{ border-bottom:3px solid var(--acc); padding-bottom:9pt; margin-bottom:8pt; }
   .kick{ font-size:7.6pt; letter-spacing:.2em; text-transform:uppercase; color:var(--acc);
     font-weight:700; margin-bottom:7pt; }
   .sub{ font-size:10.5pt; color:var(--mut); margin-top:7pt; }
@@ -34,13 +34,13 @@
     margin:7pt 0; break-inside:avoid; font-size:10pt; }
   .warn{ background:var(--amber-soft); border-left:3px solid var(--amber); padding:8pt 11pt;
     margin:7pt 0; break-inside:avoid; }
-  table{ width:100%; border-collapse:collapse; font-size:8.6pt; margin:6pt 0 7pt; break-inside:avoid; }
+  table{ width:100%; border-collapse:collapse; font-size:8.4pt; margin:5pt 0 6pt; break-inside:avoid; }
   th{ text-align:left; font-size:7pt; letter-spacing:.12em; text-transform:uppercase;
     color:var(--mut); padding:0 7pt 4pt 0; border-bottom:1.2px solid var(--ink); font-weight:700; }
-  td{ padding:5pt 7pt 5pt 0; border-bottom:.8px solid var(--line); vertical-align:top; line-height:1.34; }
+  td{ padding:4.4pt 7pt 4.4pt 0; border-bottom:.8px solid var(--line); vertical-align:top; line-height:1.34; }
   td.k{ color:var(--ink); font-weight:700; }
-  .fig{ border:1px solid var(--line); border-radius:3px; padding:11pt 12pt 10pt;
-    margin:7pt 0 8pt; break-inside:avoid; }
+  .fig{ border:1px solid var(--line); border-radius:3px; padding:10pt 11pt 9pt;
+    margin:6pt 0 7pt; break-inside:avoid; }
   .figcap{ font-size:6.8pt; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
     font-weight:700; margin-bottom:9pt; }
   .row{ display:flex; gap:6pt; align-items:stretch; }
@@ -151,10 +151,12 @@
 
 <div class="pb"></div>
 
-<h2><span class="n">06</span>How I would split my time</h2>
+<h2><span class="n">06</span>How I would split my time &mdash; my recommendation</h2>
+
+<div class="about" style="margin-bottom:8pt;"><b>A note on this split.</b> You raised universities as an example, not a decided plan. Below is the weight I would give it &mdash; a recommendation, not an assumption. The same plan works at any ratio.</div>
 
 <div class="fig">
-  <div class="figcap">Outreach effort</div>
+  <div class="figcap">Outreach effort &mdash; proposed</div>
   <div class="bar">
     <div class="seg u">UNIVERSITIES &mdash; 40%</div>
     <div class="seg c">CORPORATE &mdash; 60%</div>
@@ -182,7 +184,6 @@
       <li>Shorter decisions, tied to a quarter.</li>
       <li>This is where revenue lands inside the funding window.</li>
       <li>Bigger, faster deals once a single workload is proven.</li>
-      <li>Produces the reference names universities respect.</li>
     </ul>
   </div>
 </div>
@@ -194,7 +195,6 @@
   <tr><td class="k">What I open with</td><td>An estimate of what their current setup costs them per experiment</td><td>An estimate of their monthly AI bill, worked out before the call</td></tr>
   <tr><td class="k">Lead argument</td><td><b>Data stays in-house first</b>, cost second</td><td><b>Cost first</b>, data second</td></tr>
   <tr><td class="k">Cheapest way in</td><td>A technical talk on campus &mdash; fills a room no email would reach</td><td>Being roughly right about their bill before they tell me</td></tr>
-  <tr><td class="k">Deal shape</td><td>Whole institution, annual, slower</td><td>One team first, then spreads</td></tr>
 </table>
 
 <h2><span class="n">08</span>The first 90 days</h2>
@@ -225,6 +225,6 @@
   </div>
 </div>
 
-<div class="key" style="margin-top:9pt;"><b>In one line:</b> Divyam cuts the AI bill roughly in half without the customer&rsquo;s product changing and without their data leaving the building &mdash; and I would spend four days in ten on universities, because that is where the need is written into policy and nobody else is knocking.</div>
+<div class="key" style="margin-top:9pt;"><b>In one line:</b> Divyam cuts the AI bill roughly in half without the customer&rsquo;s product changing and without their data leaving the building &mdash; and my recommendation would be to give universities a real share of the week, because that is where the need is written into policy and nobody else is knocking.</div>
 
 </body></html>
