@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Divyam.AI — Sales Note</title>
+<style>
+  @page { size:A4; margin:14mm 14mm 13mm; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --ink:#0F1826; --body:#33415C; --mut:#6B7790; --acc:#0A6E4E; --acc-soft:#E6F2ED;
+    --blue:#1F3A5F; --blue-soft:#EAF0F6; --amber:#A65B00; --amber-soft:#FBF3E8;
+    --line:#E1E6EC; --line2:#C9D2DC; --panel:#F6F8FA;
+  }
+  body{ font-family:"Liberation Sans",Helvetica,Arial,sans-serif; color:var(--body);
+    font-size:9.6pt; line-height:1.42; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  h1{ font-family:"Bitstream Charter",Charter,Georgia,serif; font-size:24pt; line-height:1.08;
+    letter-spacing:-.02em; color:var(--ink); }
+  h2{ font-family:"Bitstream Charter",Charter,Georgia,serif; font-size:13.5pt; color:var(--ink);
+    margin:14pt 0 6pt; padding-bottom:4pt; border-bottom:1.4px solid var(--ink);
+    break-after:avoid; letter-spacing:-.01em; }
+  h2 .n{ color:var(--acc); font-size:10pt; margin-right:6pt; }
+  p{ margin-bottom:5pt; }
+  b,strong{ color:var(--ink); font-weight:700; }
+  ul{ list-style:none; }
+  li{ position:relative; padding-left:12pt; margin-bottom:3.5pt; }
+  li:before{ content:""; position:absolute; left:0; top:4.6pt; width:3.6pt; height:3.6pt;
+    border:1.2px solid var(--acc); border-radius:50%; }
+  .cover{ border-bottom:3px solid var(--acc); padding-bottom:11pt; margin-bottom:10pt; }
+  .kick{ font-size:7.6pt; letter-spacing:.2em; text-transform:uppercase; color:var(--acc);
+    font-weight:700; margin-bottom:7pt; }
+  .sub{ font-size:10.5pt; color:var(--mut); margin-top:7pt; }
+  .byline{ font-size:8pt; color:var(--mut); margin-top:7pt; letter-spacing:.04em; }
+  .about{ background:var(--panel); border-left:3px solid var(--line2); padding:8pt 11pt;
+    margin-bottom:6pt; break-inside:avoid; }
+  .about b{ color:var(--ink); }
+  .key{ background:var(--acc-soft); border-left:3px solid var(--acc); padding:8pt 11pt;
+    margin:7pt 0; break-inside:avoid; font-size:10pt; }
+  .warn{ background:var(--amber-soft); border-left:3px solid var(--amber); padding:8pt 11pt;
+    margin:7pt 0; break-inside:avoid; }
+  table{ width:100%; border-collapse:collapse; font-size:8.6pt; margin:6pt 0 7pt; break-inside:avoid; }
+  th{ text-align:left; font-size:7pt; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--mut); padding:0 7pt 4pt 0; border-bottom:1.2px solid var(--ink); font-weight:700; }
+  td{ padding:5pt 7pt 5pt 0; border-bottom:.8px solid var(--line); vertical-align:top; line-height:1.34; }
+  td.k{ color:var(--ink); font-weight:700; }
+  .fig{ border:1px solid var(--line); border-radius:3px; padding:11pt 12pt 10pt;
+    margin:7pt 0 8pt; break-inside:avoid; }
+  .figcap{ font-size:6.8pt; letter-spacing:.12em; text-transform:uppercase; color:var(--mut);
+    font-weight:700; margin-bottom:9pt; }
+  .row{ display:flex; gap:6pt; align-items:stretch; }
+  .bx{ flex:1; border:1px solid var(--line2); border-radius:3px; padding:7pt 8pt; font-size:8pt; line-height:1.3; }
+  .bx .t{ display:block; font-weight:700; color:var(--ink); margin-bottom:2pt; font-size:8.6pt; }
+  .bx .s{ color:var(--mut); font-size:7.6pt; }
+  .bx.go{ background:var(--acc-soft); border-color:#B9DCCC; }
+  .ar{ align-self:center; color:var(--line2); font-size:12pt; font-weight:700; }
+  /* split bar */
+  .bar{ display:flex; height:26pt; border-radius:3px; overflow:hidden; margin-bottom:6pt; }
+  .seg{ display:flex; align-items:center; justify-content:center; color:#fff;
+    font-size:8.4pt; font-weight:700; letter-spacing:.04em; }
+  .seg.u{ background:var(--acc); width:40%; }
+  .seg.c{ background:var(--blue); width:60%; }
+  .legend{ display:flex; gap:16pt; font-size:7.6pt; color:var(--mut); }
+  .legend span b{ color:var(--ink); }
+  /* mix bar */
+  .mix{ display:flex; height:22pt; border:1px solid var(--line2); border-radius:3px; overflow:hidden; }
+  .mix .a{ width:75%; background:var(--acc-soft); display:flex; align-items:center;
+    justify-content:center; font-size:8pt; color:#08543C; font-weight:700; }
+  .mix .b{ width:25%; background:var(--blue-soft); display:flex; align-items:center;
+    justify-content:center; font-size:8pt; color:var(--blue); font-weight:700; }
+  .cols{ display:flex; gap:14pt; }
+  .cols > div{ flex:1; }
+  .foot{ position:fixed; bottom:-9mm; left:0; right:0; font-size:6.6pt; color:#A6B0BE;
+    letter-spacing:.1em; text-transform:uppercase; border-top:.8px solid var(--line);
+    padding-top:4pt; display:flex; justify-content:space-between; }
+  .pb{ break-before:page; }
+</style></head>
+<body>
+
+<div class="foot"><span>Divyam.AI — sales note</span><span>Saurabh Navale</span></div>
+
+<div class="cover">
+  <div class="kick">Prepared for Sandeep Kohli</div>
+  <h1>What Divyam Sells, and How I Would Sell It</h1>
+  <div class="sub">Following our conversation — the problem in plain terms, the point you raised about Navier&ndash;Stokes, and the outreach plan.</div>
+  <div class="byline">Saurabh Navale &middot; 25 September 2026</div>
+</div>
+
+<div class="about"><b>What this document is.</b> Three pages. Page one is the problem we sell into. Page two is what Divyam does about it. Page three is how I would go and find the buyers. No technical detail — this is written the way I would explain it to a customer.</div>
+
+<h2><span class="n">01</span>The problem, in five lines</h2>
+<ul>
+  <li>Companies run their AI features on the most expensive models available.</li>
+  <li>Most of what they send is routine work &mdash; lookups, sorting, formatting, summarising.</li>
+  <li>A cheaper model would handle that routine work just as well.</li>
+  <li><b>Nobody switches, because nobody can prove the quality will hold.</b></li>
+  <li>So the bill keeps growing, and their data keeps leaving the building to get processed.</li>
+</ul>
+
+<h2><span class="n">02</span>Why "sending it outside" stopped being acceptable</h2>
+<ul>
+  <li>Research, financial documents and customer records leave the company to be processed.</li>
+  <li>This year the AI labs themselves disclosed incidents where their own models reached systems they were never meant to touch.</li>
+  <li>The risk stopped being theoretical, and buyers noticed.</li>
+  <li><b>For banks and universities it is no longer a preference. It is a rule they have to follow.</b></li>
+</ul>
+
+<h2><span class="n">03</span>The Navier&ndash;Stokes point you raised</h2>
+<ul>
+  <li>Navier&ndash;Stokes is the famous maths problem that <b>cannot be solved on paper</b> &mdash; you can only measure the system as it moves and keep correcting.</li>
+  <li><b>Choosing which model should answer which request is the same kind of problem.</b> There is no formula. Model rankings and price lists will not tell you.</li>
+  <li>Which is why competitors get it wrong: they hand the customer a set of fixed rules, written by a person, on a day. New models arrive weekly, so those rules are out of date almost immediately.</li>
+</ul>
+
+<div class="key"><b>The sentence I would use with a customer:</b> &ldquo;Everyone else gives you rules that are stale the day they are written. Divyam measures your actual traffic and corrects itself &mdash; continuously.&rdquo;</div>
+
+<div class="pb"></div>
+
+<h2><span class="n">04</span>What Divyam actually does</h2>
+
+<div class="fig">
+  <div class="figcap">How it works &mdash; three steps</div>
+  <div class="row">
+    <div class="bx"><span class="t">1. Learn their standard</span><span class="s">Divyam studies the customer&rsquo;s own examples to learn what a good answer looks like for them &mdash; not a generic score.</span></div>
+    <div class="ar">&rarr;</div>
+    <div class="bx"><span class="t">2. Send work to the cheapest model that passes</span><span class="s">Every single request is matched to the cheapest model that still meets that standard. Hard requests still go to the expensive model.</span></div>
+    <div class="ar">&rarr;</div>
+    <div class="bx go"><span class="t">3. Keep checking, keep correcting</span><span class="s">New model arrives, traffic changes, quality drifts &mdash; Divyam re-tests and adjusts on its own.</span></div>
+  </div>
+</div>
+
+<div class="fig">
+  <div class="figcap">Where the saving comes from &mdash; the work mix, estimated</div>
+  <div class="mix">
+    <div class="a">Routine work &mdash; roughly three quarters</div>
+    <div class="b">Genuinely hard &mdash; the rest</div>
+  </div>
+  <div style="font-size:7.8pt;color:var(--mut);margin-top:6pt;">Today <b>all</b> of this runs on the expensive model. Divyam moves the left-hand block to cheaper models and leaves the right-hand block alone. <b>Estimated outcome: roughly half the cost, with no change to the product and no drop in quality.</b></div>
+</div>
+
+<ul>
+  <li><b>It runs inside the customer&rsquo;s own environment</b> &mdash; nothing leaves their building.</li>
+  <li><b>Nothing moves unless quality holds.</b> The standard is the gate, not a hope.</li>
+  <li><b>No engineering work for the customer</b> &mdash; the product stays exactly as it is.</li>
+  <li><b>Already proven.</b> MakeMyTrip cut their AI cost by more than half on a live product with no quality loss.</li>
+</ul>
+
+<h2><span class="n">05</span>The GPU partnership &mdash; a second route to market</h2>
+<ul>
+  <li>Tie-ups with Indian GPU providers such as <b>Yotta and E2E</b>, including a place on their marketplace.</li>
+  <li>They sell the hardware. Customers often do not know what is genuinely worth running on it.</li>
+  <li><b>Divyam makes that hardware useful</b> by proving the cheaper open models are good enough to rely on.</li>
+  <li>Their sales teams reach buyers who have already spent the money &mdash; that is distribution we do not pay for.</li>
+  <li>Especially useful for universities, who often buy their compute from exactly these providers.</li>
+</ul>
+
+<div class="pb"></div>
+
+<h2><span class="n">06</span>How I would split my time</h2>
+
+<div class="fig">
+  <div class="figcap">Outreach effort</div>
+  <div class="bar">
+    <div class="seg u">UNIVERSITIES &mdash; 40%</div>
+    <div class="seg c">CORPORATE &mdash; 60%</div>
+  </div>
+  <div class="legend">
+    <span><b>2 days a week</b> &middot; ~20 institutions a month</span>
+    <span><b>3 days a week</b> &middot; ~30 companies a month</span>
+  </div>
+</div>
+
+<div class="cols">
+  <div>
+    <p style="font-size:8pt;color:var(--acc);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4pt;">Why universities get 40%</p>
+    <ul style="font-size:9pt;">
+      <li>Large numbers of users in a single institution.</li>
+      <li>Keeping data in-house is written policy, not preference.</li>
+      <li>Tight budgets make &ldquo;half the cost&rdquo; an easy conversation.</li>
+      <li><b>Nobody else is calling on them.</b></li>
+      <li>Students become users who carry it into industry later.</li>
+    </ul>
+  </div>
+  <div>
+    <p style="font-size:8pt;color:var(--blue);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4pt;">Why corporate stays 60%</p>
+    <ul style="font-size:9pt;">
+      <li>Shorter decisions, tied to a quarter.</li>
+      <li>This is where revenue lands inside the funding window.</li>
+      <li>Bigger, faster deals once a single workload is proven.</li>
+      <li>Produces the reference names universities respect.</li>
+    </ul>
+  </div>
+</div>
+
+<h2><span class="n">07</span>How each side is worked</h2>
+<table>
+  <tr><th style="width:74pt"></th><th style="width:46%">Universities</th><th>Corporate</th></tr>
+  <tr><td class="k">Who I contact</td><td>Dean of Research, CIO, Head of Computer Centre &mdash; and lab heads directly</td><td>Engineering leadership, and whoever owns the AI budget</td></tr>
+  <tr><td class="k">What I open with</td><td>An estimate of what their current setup costs them per experiment</td><td>An estimate of their monthly AI bill, worked out before the call</td></tr>
+  <tr><td class="k">Lead argument</td><td><b>Data stays in-house first</b>, cost second</td><td><b>Cost first</b>, data second</td></tr>
+  <tr><td class="k">Cheapest way in</td><td>A technical talk on campus &mdash; fills a room no email would reach</td><td>Being roughly right about their bill before they tell me</td></tr>
+  <tr><td class="k">Deal shape</td><td>Whole institution, annual, slower</td><td>One team first, then spreads</td></tr>
+</table>
+
+<h2><span class="n">08</span>The first 90 days</h2>
+<table>
+  <tr><th style="width:52pt"></th><th style="width:46%">Universities</th><th>Corporate</th></tr>
+  <tr><td class="k">Month 1</td><td>Build the institution list, book two speaking slots, start conversations with individual labs</td><td>Build the account list, open cost conversations, first discovery calls</td></tr>
+  <tr><td class="k">Month 2</td><td>Take one institution up to Dean or CIO level, scope a trial with a single lab</td><td>Two to three trials scoped and signed, one workload each</td></tr>
+  <tr><td class="k">Month 3</td><td>One institutional trial running and producing a result we can publish</td><td>First closes &mdash; with the customer&rsquo;s own team presenting the result internally</td></tr>
+</table>
+
+<div class="cols" style="margin-top:4pt;">
+  <div>
+    <p style="font-size:8pt;color:var(--acc);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4pt;">What I track</p>
+    <ul style="font-size:9pt;">
+      <li><b>How many accounts I can state a current AI spend for</b> &mdash; everything follows this one.</li>
+      <li>Trials scoped, and trials running.</li>
+      <li>Users activated on each side.</li>
+    </ul>
+  </div>
+  <div>
+    <p style="font-size:8pt;color:var(--blue);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4pt;">What good looks like at day 90</p>
+    <ul style="font-size:9pt;">
+      <li>About a third of the pipeline from universities.</li>
+      <li>Most of the closed revenue from corporate.</li>
+      <li>One published university result &mdash; that travels further than any advertising we could buy.</li>
+      <li>At least one GPU partner sending introductions.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="key" style="margin-top:9pt;"><b>In one line:</b> Divyam cuts the AI bill roughly in half without the customer&rsquo;s product changing and without their data leaving the building &mdash; and I would spend four days in ten on universities, because that is where the need is written into policy and nobody else is knocking.</div>
+
+</body></html>
