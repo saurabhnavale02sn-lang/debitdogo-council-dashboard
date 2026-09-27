@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude — Motion Reel 2026</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin: 0; height: 100%; background: #0E0E12; color: #F2ECE1; font: 12px/1.4 ui-monospace, monospace; }
+  body.render { overflow: hidden; }
+  body.render #ui { display: none; }
+  #stage { display: block; }
+  body.preview #stage { width: min(100vw, calc((100vh - 64px) * 16 / 9)); height: auto; margin: 0 auto; }
+  #ui { display: flex; gap: 12px; align-items: center; padding: 12px 16px; }
+  #ui input[type=range] { flex: 1; accent-color: #FF4D1C; }
+  #ui button { background: #FF4D1C; color: #0E0E12; border: 0; padding: 6px 12px; font: inherit; font-weight: 700; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+<div id="ui">
+  <button id="play">PLAY</button>
+  <input id="scrub" type="range" min="0" max="899" value="0">
+  <span id="tc">00:00:00:00</span>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
