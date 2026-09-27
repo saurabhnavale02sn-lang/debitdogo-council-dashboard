@@ -275,10 +275,12 @@ async function cmdVideo() {
   const hasAudio = existsSync(audio) && from === 0;
   const args = ['-i', master];
   if (hasAudio) args.push('-i', audio);
-  args.push('-c:v', 'libx264', '-preset', final ? 'slow' : 'veryfast', '-crf', opt('crf', final ? '14' : '20'),
-    '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-tune', 'grain', '-movflags', '+faststart',
+  // CRF 18 / tune film keeps the grain's texture at ~27 MB; tune grain at
+  // CRF 14 is visually identical here but ~170 MB.
+  args.push('-c:v', 'libx264', '-preset', final ? 'slow' : 'veryfast', '-crf', opt('crf', final ? '18' : '20'),
+    '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-tune', 'film', '-movflags', '+faststart',
     '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv');
-  if (hasAudio) args.push('-c:a', 'aac', '-b:a', '320k', '-shortest');
+  if (hasAudio) args.push('-c:a', 'aac', '-b:a', '256k', '-shortest');
   args.push(out);
   await ffmpeg(args).done;
   await rm(tmp, { recursive: true, force: true });
