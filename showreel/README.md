@@ -14,6 +14,9 @@ synthesised from oscillators and noise. It all sits on one musical grid:
 **128 BPM, 8 bars = exactly 15.000 s**, so every cut lands on a beat and
 every visual hit has a sound.
 
+The same code also renders a personalised cut, a sales reel for Saurabh
+Nawale. See [*Personalised cut*](#personalised-cut) below.
+
 ## The shots
 
 | # | Time | Shot | What happens | Craft on show |
@@ -33,6 +36,35 @@ expensive one.
 
 ![Contact sheet: one frame every quarter second](contact-sheet.jpg)
 
+<a id="personalised-cut"></a>
+## Personalised cut: Saurabh Nawale, Sales Reel 2026
+
+[![Saurabh Nawale sales reel: $750K+ net-new ARR closed](saurabh-poster.jpg)](saurabh-nawale-reel.mp4)
+
+**▶ [`saurabh-nawale-reel.mp4`](saurabh-nawale-reel.mp4)**: 1920×1080, 60 fps, 900 frames, H.264 + AAC, 28 MB.
+
+This cut reuses the engine, choreography and soundtrack. A content profile
+(`src/profile.js`) supplies every word and number on screen, so the numbers
+land on the beats the motion was designed around.
+
+| # | Time | Shot | On screen |
+|---|------|------|-----------|
+| 01 | 0.00 | **The funnel** | The point, line and word become a sales funnel. *PROSPECT: 1,000+ contacts*, then *PIPELINE* counting up to $1.5M as the line grows, then *CLOSER*: $750K+ net-new ARR, 122% of quota. The camera dives through the "O". |
+| 02 | 1.88 | **Net-new ARR** | *$750K+ / net-new / ARR CLOSED.* One line per beat. |
+| 03 | 3.75 | **Quota** | Eight stat tiles set into the Bauhaus grid: 122% Q2 quota, 110% Q4 quota, $750K+ net-new ARR, 100+ accounts, 90% C-suite win rate, 7+ years in B2B sales, $50–80K ACV on AI agentic deals, and the Sales Shark award. |
+| 04 | 5.63 | **Outbound** | The particle burst becomes the outbound engine: 1,000+ contacts, scored and worked in waves across NA, EU and LATAM. |
+| 05 | 7.50 | **Pipeline** | $1.5M pipeline built with Van Mossel Automotive Group, Europe's 5th-largest auto group, across 6+ stakeholders. *EMEA · APAC · NORTH AMERICA* orbits the chrome. |
+| 06 | 9.38 | **Reach** | LinkedIn post impressions as a running total since June (2,145). An odometer counts 6,981 followers (+1% week over week), with 322 profile viewers in 90 days and 98 search appearances in a week. A card for X (@Saurabhnawale_, writing on LLMs and AI agents) has its Follow button clicked on the beat. |
+| 07 | 11.25 | **Highlights** | $750K+ · 122% · $1.5M · 100+ · 6,981 · 7+ YRS on 16th notes, each with its caption. |
+| 08 | 13.13 | **Signature** | *Saurabh Nawale.* Senior Account Executive, AI · Cloud · SaaS. *7+ years. $750K+ closed. 122% of quota.* linkedin.com/in/saurabhnawale. |
+
+Every figure comes from one of three places: the September 2026 résumé, the
+LinkedIn analytics dashboard (September 2026), or LinkedIn's weekly digest
+emails (June to September 2026). The impressions chart adds up the weekly
+digests, so it shows accumulated reach rather than a week-over-week change.
+
+![Saurabh Nawale sales reel contact sheet: one frame every quarter second](saurabh-contact-sheet.jpg)
+
 ## How it's built
 
 ```
@@ -42,6 +74,7 @@ src/
   type.js          variable-font outline engine (per-glyph weight/width)
   engine.js        CPU 2D layers + WebGL2 compositing, motion-blur accumulation, post
   gl.js            tiny WebGL2 toolkit
+  profile.js       content profiles: every word and number on screen
   reel.js          the conductor: shots, transitions, camera hits, cut-aware shutter
   hud.js           viewfinder overlay (timecode, slate, tempo pips)
   transitions.js   tile flip, duotone, glitch shaders
@@ -89,7 +122,16 @@ npm run preview                      # live preview: http://127.0.0.1:8080/index
 node tools/render.mjs sheet          # quick contact sheet  -> out/sheet.png
 node tools/render.mjs video --res 0.5 --samples 2   # fast draft -> out/preview.mp4
 npm run render                       # full quality -> showreel.mp4
+node tools/render.mjs video --profile saurabh       # full quality -> saurabh-nawale-reel.mp4
 ```
+
+`stills`, `sheet`, `video` and `bench` take `--profile <id>` (default
+`claude`). In the live preview, pick it in the URL: `index.html?profile=saurabh`.
+
+`showreel.mp4` was rendered from commit `f1e235b`, before profiles existed.
+Rendering the `claude` profile from later commits gives the same film with
+three small differences: larger ignition labels, thousands separators in the
+chart values, and an odometer that carries like a mechanical counter.
 
 The full-quality render is a small farm: three headless Chromium workers
 (software WebGL via SwiftShader, no GPU needed) pull chunks of frames from a
