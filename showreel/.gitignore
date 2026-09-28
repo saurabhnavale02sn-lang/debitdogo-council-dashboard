@@ -1,3 +1,4 @@
 # Render intermediates (the final showreel.mp4, poster and soundtrack live
 # at the top level of this folder).
 out/
+__pycache__/
