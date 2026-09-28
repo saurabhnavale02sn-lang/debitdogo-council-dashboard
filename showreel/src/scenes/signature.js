@@ -4,6 +4,7 @@
 import { C, W, H, BEAT, BAR, rgba } from '../config.js';
 import { ease, spring, sat, mix, remap, clamp } from '../math.js';
 import { run, glyph, mono, serifText, scramble } from '../draw.js';
+import { P } from '../profile.js';
 
 export const T0 = 7 * BAR; // 13.125
 let R, name, SIZE, X0, BASE, DOT_R, DOT_X, DOT_Y;
@@ -12,13 +13,15 @@ const WDTH = 116;
 
 export function init(res) {
   R = res;
-  SIZE = 272;
-  name = run(R.flex, 'Claude', { size: SIZE, wght: WGHT, wdth: WDTH, tracking: -0.01 });
+  // As large as possible, up to 272 px, while the name + dot fit 1560 px.
+  const probe = run(R.flex, P.signature.name, { size: 100, wght: WGHT, wdth: WDTH, tracking: -0.01 });
+  SIZE = Math.min(272, (1560 / (probe.width + 14)) * 100);
+  name = run(R.flex, P.signature.name, { size: SIZE, wght: WGHT, wdth: WDTH, tracking: -0.01 });
   DOT_R = SIZE * 0.085;
   const gap = SIZE * 0.05;
   const total = name.width + gap + DOT_R * 2;
   X0 = W / 2 - total / 2;
-  BASE = H / 2 + name.cap / 2 - 40;
+  BASE = H / 2 + name.cap / 2 - (P.signature.contact ? 78 : 40);
   DOT_X = X0 + name.width + gap + DOT_R;
   DOT_Y = BASE - DOT_R;
 }
@@ -61,6 +64,7 @@ export function draw(ctx, t) {
   const breathe = 40 * Math.sin(Math.max(0, tau - 1.1) * 4.2) * sat((tau - 1.1) / 0.3);
   ctx.fillStyle = C.paper;
   for (const g of name.glyphs) {
+    if (g.ch === ' ') continue;
     const gx = X0 + g.px;
     const passT = clamp((gx + g.pw * 0.3 - (X0 - DOT_R * 3)) / (DOT_X - X0 + DOT_R * 3), 0, 1);
     // invert the dot's easing to find when it passed this glyph
@@ -109,10 +113,16 @@ export function draw(ctx, t) {
   const rw = (DOT_X + DOT_R - X0) * ease.snap(sat((tau - BEAT + 0.05) / 0.45));
   ctx.fillStyle = rgba(C.paper, 0.35);
   ctx.fillRect(X0 + 6, ry, rw, 1.5);
-  mono(ctx, scramble('MOTION DESIGNER', sp, 11, fr), X0 + 6, ry + 40, { size: 17, weight: 700, color: C.paper, spacing: 0.3 });
-  mono(ctx, scramble('SHOWREEL 2026', sp, 12, fr), DOT_X + DOT_R, ry + 40, { size: 17, weight: 400, color: C.paper, spacing: 0.3, align: 'right', alpha: 0.7 });
+  const S = P.signature;
+  mono(ctx, scramble(S.left, sp, 11, fr), X0 + 6, ry + 40, { size: 17, weight: 700, color: C.paper, spacing: 0.3 });
+  mono(ctx, scramble(S.right, sp, 12, fr), DOT_X + DOT_R, ry + 40, { size: 17, weight: 400, color: C.paper, spacing: 0.3, align: 'right', alpha: 0.7 });
   // tagline
   const tp = ease.outExpo(sat((tau - 2 * BEAT) / 0.6));
-  serifText(ctx, 'every frame, written in code.', W / 2, ry + 136 + (1 - tp) * 24, { size: 46, color: C.paper, align: 'center', alpha: tp * 0.9 });
+  serifText(ctx, S.tagline, W / 2, ry + 136 + (1 - tp) * 24, { size: 46, color: C.paper, align: 'center', alpha: tp * 0.9 });
+  // contact line, typed on with the last ping
+  if (S.contact) {
+    const cp = sat((tau - 3 * BEAT + 0.12) / 0.4);
+    mono(ctx, scramble(S.contact, cp, 13, fr), W / 2, ry + 204, { size: 18, weight: 600, color: C.flame, spacing: 0.08, align: 'center' });
+  }
   ctx.restore();
 }

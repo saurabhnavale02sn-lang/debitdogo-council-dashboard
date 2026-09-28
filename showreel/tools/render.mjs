@@ -35,6 +35,9 @@ const opt = (name, def) => {
   return i >= 0 ? argv[i + 1] : def;
 };
 const flag = (name) => argv.includes('--' + name);
+const PROFILE = opt('profile', 'claude');
+// Final output name per content profile.
+const FINAL_NAME = { claude: 'showreel.mp4', saurabh: 'saurabh-nawale-reel.mp4' }[PROFILE] || `showreel-${PROFILE}.mp4`;
 
 // ---------------------------------------------------------------- ffmpeg ---
 function findFfmpeg() {
@@ -107,10 +110,16 @@ async function launchWorker(port, id, res, samples, onFrame, wss) {
     };
     wss.on('connection', onConn);
   });
-  const q = new URLSearchParams({ mode: 'render', res: String(res), ws: `ws://127.0.0.1:${port}/ws?worker=${id}` });
+  const q = new URLSearchParams({ mode: 'render', res: String(res), profile: PROFILE, ws: `ws://127.0.0.1:${port}/ws?worker=${id}` });
   if (samples) q.set('samples', String(samples));
+  // A module that fails to load never sets ready/bootError; fail fast instead.
+  let failBoot;
+  const bootFailed = new Promise((_, rej) => { failBoot = rej; });
+  const onErr = (e) => failBoot(new Error(`worker ${id} page error during boot: ${e.message}`));
+  page.on('pageerror', onErr);
   await page.goto(`http://127.0.0.1:${port}/index.html?${q}`);
-  await page.waitForFunction(() => window.ready || window.bootError, null, { timeout: 120000 });
+  await Promise.race([page.waitForFunction(() => window.ready || window.bootError, null, { timeout: 120000 }), bootFailed]);
+  page.off('pageerror', onErr);
   const err = await page.evaluate(() => window.bootError);
   if (err) throw new Error(`worker ${id} boot failed: ${err}`);
   await connected;
@@ -232,7 +241,7 @@ async function cmdVideo() {
   const from = parseInt(opt('from', '0'), 10);
   const to = parseInt(opt('to', String(FRAMES)), 10);
   const final = res === 1 && !samples && from === 0 && to === FRAMES;
-  const out = opt('out', final ? path.join(ROOT, 'showreel.mp4') : path.join(OUT, 'preview.mp4'));
+  const out = opt('out', final ? path.join(ROOT, FINAL_NAME) : path.join(OUT, 'preview.mp4'));
   const audio = opt('audio', path.join(ROOT, 'soundtrack.wav'));
   const tmp = path.join(OUT, 'tmp');
   await rm(tmp, { recursive: true, force: true });
@@ -269,7 +278,7 @@ async function cmdVideo() {
 
   const concat = path.join(tmp, 'concat.txt');
   await writeFile(concat, jobs.map((_, k) => `file '${name(k)}'`).join('\n') + '\n');
-  const master = path.join(OUT, final ? 'master.mkv' : 'preview-master.mkv');
+  const master = path.join(OUT, final ? `master-${PROFILE}.mkv` : 'preview-master.mkv');
   await ffmpeg(['-f', 'concat', '-safe', '0', '-i', concat, '-c', 'copy', master]).done;
 
   const hasAudio = existsSync(audio) && from === 0;

@@ -5,6 +5,8 @@
 
 import { C, W, H, BEAT, BAR } from '../config.js';
 import { ease, sat, mix, mulberry32, remap } from '../math.js';
+import { run, glyph, mono } from '../draw.js';
+import { P } from '../profile.js';
 
 export const T0 = 2 * BAR; // 3.75
 export const TS = 240;
@@ -21,6 +23,7 @@ const FG = {
 };
 
 export const tiles = [];
+let RES;
 
 function pick(rnd, weighted) {
   let total = 0;
@@ -33,7 +36,8 @@ function pick(rnd, weighted) {
   return weighted[weighted.length - 1][0];
 }
 
-export function init() {
+export function init(res) {
+  RES = res;
   const rnd = mulberry32(7);
   const BG = [['paper', 5], ['ink', 4], ['flame', 2], ['cobalt', 2], ['sun', 1]];
   const MOT = [['quarter', 4], ['circle', 3], ['half', 4], ['leaf', 2], ['tri', 2], ['arch', 2], ['rings', 1], ['stripes', 1], ['plain', 2]];
@@ -60,6 +64,62 @@ export function init() {
       });
     }
   }
+  // Profile stat tiles replace a few motifs: a number, a label, no rotation.
+  for (const st of P.geometry.stats) {
+    const tile = tiles[st.r * COLS + st.c];
+    Object.assign(tile, { motif: 'stat', bg: st.bg, fg: st.fg, stat: layoutStat(st) });
+  }
+}
+
+// Fit a stat's value into the tile (width axis first, then size).
+function layoutStat(st) {
+  const maxW = 196;
+  if (st.serif) {
+    const lines = st.value.split(' ');
+    let size = 92;
+    for (const l of lines) size = Math.min(size, (maxW / run(RES.serif, l, { size: 100 }).width) * 100);
+    return { ...st, lines: lines.map((l) => run(RES.serif, l, { size })), size };
+  }
+  const f = RES.flex;
+  let size = 124;
+  let wdth = f.fitWidth(st.value, (maxW / size) * f.upm, 900);
+  let r = run(f, st.value, { size, wght: 900, wdth });
+  if (r.width > maxW) {
+    size *= maxW / r.width;
+    r = run(f, st.value, { size, wght: 900, wdth });
+  }
+  return { ...st, lines: [r], size };
+}
+
+function statTile(ctx, stat, h, fgCol) {
+  ctx.fillStyle = fgCol;
+  if (stat.serif) {
+    const lh = stat.size * 0.86;
+    stat.lines.forEach((r, i) => {
+      ctx.save();
+      ctx.translate(-h + 20, -h + 26 + lh * (i + 1) - lh * 0.18);
+      for (const g of r.glyphs) {
+        ctx.save();
+        ctx.translate(g.px, 0);
+        glyph(ctx, RES.serif, g.g, r.size);
+        ctx.restore();
+      }
+      ctx.restore();
+    });
+  } else {
+    const r = stat.lines[0];
+    ctx.save();
+    ctx.translate(-h + 22, 26);
+    for (const g of r.glyphs) {
+      ctx.save();
+      ctx.translate(g.px, 0);
+      glyph(ctx, RES.flex, g.g, r.size);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  ctx.fillRect(-h + 22, h - 58, 28, 3);
+  mono(ctx, stat.label, -h + 22, h - 24, { size: 13, weight: 700, color: fgCol, spacing: 0.1, alpha: 0.95 });
 }
 
 // Draw a motif in a tile-local frame (-120..120), fg fill style set.
@@ -213,8 +273,11 @@ export function draw(ctx, t, { bgFill = true, pal = C } = {}) {
     ctx.fillStyle = bg;
     ctx.fillRect(-h - 2, -h - 2, 2 * h + 4, 2 * h + 4);
     ctx.save();
-    ctx.rotate(st.rot);
-    motif(ctx, tile.motif, h, bg, fg, 1);
+    if (tile.stat) statTile(ctx, tile.stat, h, fg);
+    else {
+      ctx.rotate(st.rot);
+      motif(ctx, tile.motif, h, bg, fg, 1);
+    }
     ctx.restore();
     if (st.inv > 0) {
       // inversion: a disc of swapped colours grows from the tile centre
@@ -225,8 +288,11 @@ export function draw(ctx, t, { bgFill = true, pal = C } = {}) {
       ctx.clip();
       ctx.fillStyle = fg;
       ctx.fillRect(-h - 1, -h - 1, 2 * h + 2, 2 * h + 2);
-      ctx.rotate(st.rot);
-      motif(ctx, tile.motif, h, fg, bg, 1);
+      if (tile.stat) statTile(ctx, tile.stat, h, bg);
+      else {
+        ctx.rotate(st.rot);
+        motif(ctx, tile.motif, h, fg, bg, 1);
+      }
       ctx.restore();
     }
     ctx.restore();

@@ -8,6 +8,8 @@
 import { C, W, H, BEAT, BAR, hexToRgb } from '../config.js';
 import { ease, sat, mix, mulberry32, curl2 } from '../math.js';
 import * as geometry from './geometry.js';
+import { lowerThird } from '../draw.js';
+import { P } from '../profile.js';
 
 export const T0 = 3 * BAR; // 5.625
 const T1 = 4 * BAR + 0.05;
@@ -31,7 +33,9 @@ function particleColor(name) {
   return name;
 }
 
-export function init() {
+let RES;
+export function init(res) {
+  RES = res;
   const tiles = geometry.tiles;
   N = tiles.length * PER_TILE;
   const rnd = mulberry32(4242);
@@ -150,7 +154,7 @@ function spherePoint(k, t, out) {
   return out;
 }
 
-export function draw(ctx, t, { bg = true } = {}) {
+export function draw(ctx, t, { bg = true, caption = false } = {}) {
   const tau = t - T0;
   if (bg) {
     ctx.fillStyle = C.ink;
@@ -226,4 +230,7 @@ export function draw(ctx, t, { bg = true } = {}) {
   }
   ctx.globalAlpha = 1;
   ctx.globalCompositeOperation = 'source-over';
+  if (caption && P.particles.caption) {
+    lowerThird(ctx, RES, P.particles.caption, t, T0 + 0.5, T0 + 1.5, { bigSize: 84, bigFont: 'serif' });
+  }
 }

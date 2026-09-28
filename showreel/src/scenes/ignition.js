@@ -4,15 +4,16 @@
 
 import { C, W, H, BEAT, BAR, rgba } from '../config.js';
 import { ease, spring, sat, mix, remap } from '../math.js';
-import { run, glyph, contours, pill, mono, scramble } from '../draw.js';
+import { run, glyph, contours, pill, mono, scramble, monoWidth } from '../draw.js';
+import { P } from '../profile.js';
 
 let R;
 let LINE_W = 1400;
 const CX = W / 2;
 const CY = H / 2;
 const SIZE = 300;
-const TEXT = 'MOTION';
-const PORTAL = 4; // the second O
+let TEXT = 'MOTION';
+let PORTAL = 4; // index of the O we dive through
 const ZMAX = 46;
 
 export const tLine = BEAT;
@@ -23,11 +24,13 @@ const tEnd = BAR;
 
 export function init(res) {
   R = res;
+  TEXT = P.ignition.word;
+  PORTAL = P.ignition.portal;
   LINE_W = run(R.flex, TEXT, { size: SIZE, wght: 1000, wdth: 112 }).width + 40;
 }
 
 function letterStyle(i, t) {
-  const d = Math.abs(i - 2.5) * 0.055;
+  const d = Math.abs(i - (TEXT.length - 1) / 2) * 0.055;
   const p = ease.outExpo(sat((t - tWord - 0.05 - d) / 0.45));
   const wdth = mix(25, 112, p);
   let wght = 1000;
@@ -139,17 +142,27 @@ export function draw(ctx, t) {
   }
 
   // ---- annotations (design-tool readouts)
-  const labelA = 0.75;
+  const labelA = 0.9;
+  const LS = 15; // label size
   if (t < tLine + 0.05) {
     const p = remap(t, 0.08, 0.3);
-    mono(ctx, scramble('POINT', p, 1, fr), CX + 44, CY - 34, { size: 12, weight: 700, color: C.paper, alpha: labelA });
-    mono(ctx, scramble('X 960  Y 540', p, 2, fr), CX + 44, CY - 16, { size: 12, color: C.paper, alpha: labelA * 0.6 });
+    const [head, sub] = P.ignition.point;
+    mono(ctx, scramble(head, p, 1, fr), CX + 46, CY - 38, { size: LS, weight: 700, color: C.paper, alpha: labelA });
+    mono(ctx, scramble(sub, p, 2, fr), CX + 46, CY - 16, { size: LS, color: C.paper, alpha: labelA * 0.75 });
   } else if (t < tWord) {
     const p = remap(t, tLine + 0.02, tLine + 0.2);
     const len = Math.round(w);
     const ex = CX + w / 2;
-    mono(ctx, scramble('LINE', p, 3, fr), ex - 4, CY - 30, { size: 12, weight: 700, color: C.paper, alpha: labelA, align: 'right' });
-    mono(ctx, `W ${String(len).padStart(4, '0')}  H ${h.toFixed(0)}`, ex - 4, CY + 36, { size: 12, color: C.paper, alpha: labelA * 0.6 * p, align: 'right' });
+    const [head, readout] = P.ignition.line;
+    let sub;
+    if (readout === null) sub = `W ${String(len).padStart(4, '0')}  H ${h.toFixed(0)}`;
+    else if (typeof readout === 'object') {
+      // a value that grows with the line
+      const v = readout.to * sat((w - 44) / (LINE_W - 44));
+      sub = `${readout.prefix}${v.toFixed(readout.dp)}${readout.suffix}`;
+    } else sub = readout;
+    mono(ctx, scramble(head, p, 3, fr), ex - 4, CY - 32, { size: LS, weight: 700, color: C.paper, alpha: labelA, align: 'right' });
+    mono(ctx, sub, ex - 4, CY + 42, { size: LS, color: C.paper, alpha: labelA * 0.75 * p, align: 'right' });
     // end ticks
     ctx.fillStyle = rgba(C.paper, 0.5 * p);
     ctx.fillRect(CX - w / 2 - 1, CY - 16, 1, 32);
@@ -157,12 +170,13 @@ export function draw(ctx, t) {
   } else if (t < tZoom + 0.1) {
     const p = remap(t, tWord + 0.1, tWord + 0.35);
     const st = letterStyle(0, t);
-    const ly = base + 64;
-    mono(ctx, scramble('TYPE', p, 4, fr), x0, ly, { size: 12, weight: 700, color: C.paper, alpha: labelA });
-    mono(ctx, scramble('ROBOTO FLEX', p, 5, fr), x0 + 62, ly, { size: 12, color: C.paper, alpha: labelA * 0.6 });
+    const ly = base + 68;
+    const [head, sub, right] = P.ignition.type;
+    mono(ctx, scramble(head, p, 4, fr), x0, ly, { size: LS, weight: 700, color: C.paper, alpha: labelA });
+    mono(ctx, scramble(sub, p, 5, fr), x0 + monoWidth(ctx, head, LS, 700) + 18, ly, { size: LS, color: C.paper, alpha: labelA * 0.75 });
     const wg = letterStyle(2, t);
-    mono(ctx, `WGHT ${Math.round(wg.wght).toString().padStart(4, '0')}   WDTH ${st.wdth.toFixed(1).padStart(5, '0')}`, x0 + r.width, ly,
-      { size: 12, color: C.paper, alpha: labelA * 0.6 * p, align: 'right' });
+    const rt = right ?? `WGHT ${Math.round(wg.wght).toString().padStart(4, '0')}   WDTH ${st.wdth.toFixed(1).padStart(5, '0')}`;
+    mono(ctx, right ? scramble(rt, p, 6, fr) : rt, x0 + r.width, ly, { size: right ? LS : 12, color: right ? C.flame : C.paper, weight: right ? 700 : 500, alpha: right ? p : labelA * 0.6 * p, align: 'right' });
   }
 
   ctx.restore();

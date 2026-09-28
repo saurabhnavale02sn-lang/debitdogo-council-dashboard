@@ -4,6 +4,7 @@
 import { W, H, FPS, BEAT, BAR, DURATION } from './config.js';
 import { sat, ease, remap } from './math.js';
 import { mono, scramble, monoWidth } from './draw.js';
+import { P } from './profile.js';
 
 const M = 44; // margin
 
@@ -41,6 +42,7 @@ export function drawHud(L, T, state) {
   const lp = sat((T - 0.12) / 0.45);
   const top = M + 30, bot = H - M - 18;
   const size = 13;
+  const tagX = M + 38 + monoWidth(ctx, P.hud.name, size, 700) + 22;
 
   // Busy footage gets small ink chips behind the labels so they stay legible.
   if (state.chips > 0.001 && lp > 0) {
@@ -53,7 +55,7 @@ export function drawHud(L, T, state) {
     ctx.save();
     ctx.globalAlpha = a * state.chips * 0.82 * lp;
     ctx.fillStyle = state.chipColor || '#0E0E12';
-    chip(M + 38, M + 118 + monoWidth(ctx, 'MOTION REEL ’26', size, 400), top);
+    chip(M + 38, tagX + monoWidth(ctx, P.hud.tag, size, 400), top);
     chip(W - M - 242, W - M - 38, top);
     chip(M + 38, M + 38 + monoWidth(ctx, slate, size, 600), bot);
     chip(W - M - 110 - monoWidth(ctx, '128 BPM', size, 500), W - M - 28, bot);
@@ -63,8 +65,8 @@ export function drawHud(L, T, state) {
   }
 
   // Top left: identity.
-  mono(ctx, scramble('CLAUDE', lp, 1, fr), M + 38, top, { size, weight: 700, color: col });
-  mono(ctx, scramble('MOTION REEL ’26', lp, 2, fr), M + 118, top, { size, weight: 400, color: col, alpha: 0.75 });
+  mono(ctx, scramble(P.hud.name, lp, 1, fr), M + 38, top, { size, weight: 700, color: col });
+  mono(ctx, scramble(P.hud.tag, lp, 2, fr), tagX, top, { size, weight: 400, color: col, alpha: 0.75 });
 
   // Top right: rec dot + timecode.
   const blink = Math.floor(T / BEAT) % 2 === 0 ? 1 : 0.35;

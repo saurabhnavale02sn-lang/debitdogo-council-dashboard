@@ -5,12 +5,14 @@ import { Engine } from './engine.js';
 import { FPS, FRAMES, DURATION } from './config.js';
 import { loadFont } from './type.js';
 import * as reel from './reel.js';
+import { setProfile } from './profile.js';
 
 const params = new URLSearchParams(location.search);
 const mode = params.get('mode') || 'preview';
 const res = parseFloat(params.get('res') || (mode === 'render' ? '1' : '0.5'));
 // Preview plays in real time with a single sample; render mode uses the reel's
 // per-shot motion-blur sample counts unless overridden.
+setProfile(params.get('profile') || 'claude');
 const samplesOverride = params.has('samples') ? parseInt(params.get('samples'), 10) : mode === 'preview' ? 1 : null;
 
 async function loadFace(family, url, descriptors) {

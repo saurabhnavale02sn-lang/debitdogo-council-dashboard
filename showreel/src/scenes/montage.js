@@ -4,7 +4,8 @@
 
 import { C, W, H, BEAT, BAR } from '../config.js';
 import { ease, sat, mix, spring } from '../math.js';
-import { run, glyph, strokeGlyph } from '../draw.js';
+import { run, glyph, strokeGlyph, mono, monoWidth } from '../draw.js';
+import { P } from '../profile.js';
 import * as geometry from './geometry.js';
 import * as signature from './signature.js';
 
@@ -64,32 +65,47 @@ export function drawType(ctx, t, c) {
   const p = sat(u / dur);
   const cx = W / 2, cy = H / 2;
   const f = R.flex;
+  const idx = (c.k - 4 + 6) % 6; // the six 16th-note type cuts
+  const word = P.montage.cycle[idx];
   switch (opt.style) {
     case 'condensed':
-      wordAt(ctx, 'MOTION', f, 620, { wght: 1000, wdth: 25 + 10 * p }, cx, cy);
+      wordAt(ctx, word, f, 620, { wght: 1000, wdth: 25 + 10 * p }, cx, cy);
       break;
     case 'serif':
-      wordAt(ctx, 'motion', R.serif, 470 + 40 * p, {}, cx, cy - 30);
+      wordAt(ctx, word, R.serif, 470 + 40 * p, {}, cx, cy - 30);
       break;
     case 'outline':
-      wordAt(ctx, 'MOTION', f, 330 + 30 * p, { wght: 900, wdth: 140 }, cx, cy, 'outline');
+      wordAt(ctx, word, f, 330 + 30 * p, { wght: 900, wdth: 140 }, cx, cy, 'outline');
       break;
     case 'hairline':
-      wordAt(ctx, 'MOTION', f, 300, { wght: 100, wdth: 151, tracking: 0.08 + 0.05 * p }, cx, cy);
+      wordAt(ctx, word, f, 300, { wght: 100, wdth: 151, tracking: 0.08 + 0.05 * p }, cx, cy);
       break;
     case 'wide': {
-      wordAt(ctx, 'MOTION', f, 520 + 60 * p, { wght: 1000, wdth: 151 }, cx, cy);
+      wordAt(ctx, word, f, 520 + 60 * p, { wght: 1000, wdth: 151 }, cx, cy);
       break;
     }
     case 'stack': {
       for (let i = -2; i <= 2; i++) {
         ctx.globalAlpha = i === 0 ? 1 : 0.28;
         const y = cy + i * 190 - p * 190 * Math.sign(i || 1) * 0.15;
-        wordAt(ctx, 'MOTION', f, 200, { wght: 850, wdth: 120 }, cx, y);
+        wordAt(ctx, word, f, 200, { wght: 850, wdth: 120 }, cx, y);
       }
       ctx.globalAlpha = 1;
       break;
     }
+  }
+  if (P.montage.captions) {
+    // what the number is, set small under it
+    const cap = P.montage.captions[idx];
+    // stacked cut: the caption sits in the gap under the highlighted row
+    const capH = (R.flex.cap / R.flex.upm) * 200;
+    const y = opt.style === 'stack' ? cy - p * 190 * 0.15 + capH / 2 + 34 : H - 170;
+    ctx.save();
+    ctx.globalAlpha = 0.9;
+    ctx.fillStyle = opt.fg;
+    if (opt.style !== 'stack') ctx.fillRect(cx - 14, y - 38, 28, 3);
+    ctx.restore();
+    mono(ctx, cap, cx, y, { size: 18, weight: 700, color: opt.fg, align: 'center', spacing: 0.3, alpha: 0.9 });
   }
 }
 
@@ -100,7 +116,8 @@ export function drawWord(ctx, t, c) {
   ctx.fillStyle = opt.fg;
   const f = R.flex;
   const w = 25 + 126 * (0.5 - 0.5 * Math.cos(u * 22));
-  const r = wordAt(ctx, 'MOTION', f, 330, { wght: 1000, style: (i) => ({ wdth: mix(w, 151 - w + 25, i / 5) }) }, W / 2, H / 2);
+  const word = P.montage.word;
+  const r = wordAt(ctx, word, f, 330, { wght: 1000, style: (i) => ({ wdth: mix(w, 151 - w + 25, i / (word.length - 1)) }) }, W / 2, H / 2);
   ctx.fillStyle = opt.dot;
   ctx.beginPath();
   ctx.arc(W / 2 + r.width / 2 + 40, H / 2 + r.cap / 2 - 26, 26, 0, Math.PI * 2);

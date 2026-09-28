@@ -14,6 +14,7 @@ import * as dimension from './scenes/dimension.js';
 import * as data from './scenes/data.js';
 import * as montage from './scenes/montage.js';
 import * as signature from './scenes/signature.js';
+import { P } from './profile.js';
 
 export const SHOTS = [
   { no: 1, name: 'IGNITION', t0: 0, hud: C.paper, accent: C.flame },
@@ -40,12 +41,13 @@ const IMPACTS = [
 const FLIP = { t0: 2 * BAR - 0.26, step: 0.026, dur: 0.24 };
 FLIP.t1 = FLIP.t0 + (geometry.COLS - 1 + geometry.ROWS - 1) * FLIP.step + FLIP.dur;
 
-let E, R, P;
+let E, R, PG; // engine, resources, shader programs
 
 export async function init(engine, res) {
   E = engine;
   R = res;
-  P = {
+  SHOTS.forEach((s, i) => (s.name = P.shots[i]));
+  PG = {
     tileflip: E.g.program('tileflip', TILEFLIP),
     blob: E.g.program('blob', dimension.BLOB),
     duotone: E.g.program('duotone', DUOTONE),
@@ -101,7 +103,7 @@ export function composite(E, t, T) {
     const B = E.layer();
     geometry.draw(B.ctx, t);
     const out = E.rt();
-    E.shader(P.tileflip, {
+    E.shader(PG.tileflip, {
       uA: A.upload(), uB: B.upload(), uTime: t, uT0: FLIP.t0, uStep: FLIP.step, uDur: FLIP.dur, uGap: lin(C.ink),
     }, out, null);
     return out;
@@ -113,11 +115,11 @@ export function composite(E, t, T) {
   }
   if (t < 4 * BAR) {
     const L = E.layer();
-    particles.draw(L.ctx, t);
+    particles.draw(L.ctx, t, { caption: true });
     return L;
   }
   if (t < 5 * BAR) {
-    const out = blobFrame(E, t);
+    const out = blobFrame(E, t, { lower: true });
     if (t > data.T0 - 0.32) {
       const L = E.layer();
       data.drawWipe(L.ctx, t);
@@ -152,14 +154,14 @@ function glitchIn(E, src, u, seed) {
   if (amt <= 0) return src;
   const rt = asRT(E, src);
   const out = E.rt();
-  E.shader(P.glitch, { uTex: rt.tex, uAmt: amt, uSeed: seed + Math.floor(u * 60) * 1.7 }, out, null);
+  E.shader(PG.glitch, { uTex: rt.tex, uAmt: amt, uSeed: seed + Math.floor(u * 60) * 1.7 }, out, null);
   return out;
 }
 
 function duotone(E, src, [dark, light]) {
   const rt = asRT(E, src);
   const out = E.rt();
-  E.shader(P.duotone, { uTex: rt.tex, uDark: toRgb01(dark), uLight: toRgb01(light) }, out, null);
+  E.shader(PG.duotone, { uTex: rt.tex, uDark: toRgb01(dark), uLight: toRgb01(light) }, out, null);
   return out;
 }
 
@@ -183,13 +185,14 @@ function montageFrame(E, t) {
   return c.kind === 'point' ? src : glitchIn(E, src, c.u, c.k * 13.1);
 }
 
-function blobFrame(E, t) {
+function blobFrame(E, t, { lower = false } = {}) {
   const back = E.layer();
   dimension.drawRing(back.ctx, t, false);
   const front = E.layer();
   dimension.drawRing(front.ctx, t, true);
+  if (lower) dimension.drawLower(front.ctx, t);
   const out = E.rt();
-  E.shader(P.blob, { ...dimension.uniforms(t), uBack: back.upload(), uFront: front.upload() }, out, null);
+  E.shader(PG.blob, { ...dimension.uniforms(t), uBack: back.upload(), uFront: front.upload() }, out, null);
   return out;
 }
 

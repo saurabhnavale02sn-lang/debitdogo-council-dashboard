@@ -143,3 +143,61 @@ export function scramble(text, p, seed = 0, frame = 0) {
 }
 
 export const lerpPt = (a, b, t) => [mix(a[0], b[0], t), mix(a[1], b[1], t)];
+
+// Lower third: kicker / big figure / optional serif line / detail line.
+// Reveals with a mask wipe from the left, exits with a fade.
+//   spec: { kicker, big, serif, small }   big is drawn in `bigFont` outlines.
+export function lowerThird(ctx, R, spec, t, t0, t1, opts = {}) {
+  const { x = 112, y = 842, bigSize = 84, bigFont = 'serif', panel = true, accent = '#FF4D1C', color = '#F2ECE1' } = opts;
+  const pin = 1 - Math.pow(2, -10 * Math.min(Math.max((t - t0) / 0.55, 0), 1));
+  const pout = Math.min(Math.max((t - (t1 - 0.22)) / 0.22, 0), 1);
+  if (t < t0 || pout >= 1) return;
+  const a = 1 - pout * pout;
+  const font = bigFont === 'serif' ? R.serif : R.flex;
+  const big = run(font, spec.big, bigFont === 'serif' ? { size: bigSize } : { size: bigSize, wght: 900, wdth: 100 });
+  const yK = y;
+  const yB = yK + 18 + big.cap;
+  const yS = spec.serif ? yB + 46 : null;
+  const yD = (yS ?? yB) + 36;
+  const w = Math.max(
+    big.width,
+    monoWidth(ctx, spec.kicker, 13, 700),
+    spec.small ? monoWidth(ctx, spec.small, 12, 500) : 0,
+    spec.serif ? measureSerif(ctx, spec.serif, 36) : 0,
+  );
+  ctx.save();
+  ctx.globalAlpha *= a;
+  ctx.beginPath();
+  ctx.rect(x - 34, yK - 40, (w + 68) * pin, yD - yK + 70);
+  ctx.clip();
+  const dy = (1 - pin) * 18;
+  if (panel) {
+    ctx.fillStyle = 'rgba(14,14,18,0.82)';
+    ctx.beginPath();
+    ctx.roundRect(x - 30, yK - 36, w + 60, yD - yK + 62, 16);
+    ctx.fill();
+  }
+  ctx.fillStyle = accent;
+  ctx.fillRect(x, yK - 17 + dy, 22, 3);
+  mono(ctx, spec.kicker, x + 34, yK - 11 + dy, { size: 13, weight: 700, color: accent, spacing: 0.16 });
+  ctx.fillStyle = color;
+  for (const g of big.glyphs) {
+    if (g.ch === ' ') continue;
+    ctx.save();
+    ctx.translate(x + g.px, yB + dy * 1.4);
+    glyph(ctx, font, g.g, big.size);
+    ctx.restore();
+  }
+  if (spec.serif) serifText(ctx, spec.serif, x, yS + dy * 1.8, { size: 36, color, alpha: 0.95 });
+  if (spec.small) mono(ctx, spec.small, x, yD + dy * 2.2, { size: 12, weight: 500, color, spacing: 0.14, alpha: 0.7 });
+  ctx.restore();
+}
+
+function measureSerif(ctx, text, size) {
+  ctx.save();
+  ctx.font = `${size}px ISerif`;
+  ctx.letterSpacing = '0px';
+  const w = ctx.measureText(text).width;
+  ctx.restore();
+  return w;
+}

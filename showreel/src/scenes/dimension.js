@@ -6,16 +6,16 @@
 import { C, W, H, BEAT, BAR, lin } from '../config.js';
 import { ease, sat, mix, hit, spring } from '../math.js';
 import { GLSL_HEAD } from '../gl.js';
-import { run } from '../draw.js';
+import { run, lowerThird } from '../draw.js';
+import { P } from '../profile.js';
 import { SPHERE, sphereRot, RING, ringPhase } from './particles.js';
 
 export const T0 = 4 * BAR; // 7.5
 let R, ringRun, ringScale;
-const RING_TEXT = 'DIMENSION — DEPTH — FORM — LIGHT — '.repeat(2);
 
 export function init(res) {
   R = res;
-  ringRun = run(R.flex, RING_TEXT, { size: 1, wght: 760, wdth: 112, tracking: 0.08 });
+  ringRun = run(R.flex, P.dimension.ring, { size: 1, wght: 760, wdth: 112, tracking: 0.08 });
   // scale so the text wraps exactly once around the ring
   ringScale = (2 * Math.PI * RING.r) / ringRun.width;
 }
@@ -177,6 +177,12 @@ void main() {
   col = over(layerTex(uFront, vUv), col);
   outColor = vec4(col.rgb, 1.0);
 }`;
+
+// Lower third for the chrome shot (drawn on the front layer).
+export function drawLower(ctx, t) {
+  if (!P.dimension.lower) return;
+  lowerThird(ctx, R, P.dimension.lower, t, T0 + 0.35, 5 * BAR - 0.3, { y: 178, bigSize: 112, bigFont: 'flex', panel: false });
+}
 
 // Draw the type ring glyphs on one side (front: z > 0). Each glyph gets the
 // local affine of the perspective projection at its anchor, so it is

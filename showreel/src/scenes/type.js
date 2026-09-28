@@ -5,25 +5,31 @@
 import { C, W, H, BEAT, BAR } from '../config.js';
 import { ease, spring, sat, mix, remap, clamp } from '../math.js';
 import { run, glyph } from '../draw.js';
+import { P } from '../profile.js';
 
 let R;
 export const T0 = BAR; // shot start (1.875)
 const MARGIN = 112;
 const COL = W - MARGIN * 2;
 
-let L1, L3, isRun, layout;
+let L1, L3, isRun, layout, T1, T2, T3;
+
+// Justify a line to the column on the width axis; if the axis runs out,
+// rescale the size (within limits) so the line still spans the column.
+function fitLine(f, text, size, wght) {
+  const wd = f.fitWidth(text, (COL / size) * f.upm, wght);
+  const width = (f.layout(text, { wght, wdth: wd }).width * size) / f.upm;
+  if (Math.abs(width - COL) < 2) return { size, wdth: wd };
+  return { size: clamp((size * COL) / width, size * 0.7, size * 1.25), wdth: wd };
+}
 
 export function init(res) {
   R = res;
   const f = R.flex;
-  // Line 1: TIMING, width-axis justified to the column.
-  const s1 = 390;
-  const w1 = f.fitWidth('TIMING', (COL / s1) * f.upm, 1000);
-  // Line 3: EVERYTHING. justified the same way.
-  const s3 = 246;
-  const w3 = f.fitWidth('EVERYTHING.', (COL / s3) * f.upm, 1000);
-  L1 = { size: s1, wdth: w1 };
-  L3 = { size: s3, wdth: w3 };
+  ({ l1: T1, l2: T2, l3: T3 } = P.type);
+  L1 = fitLine(f, T1, 390, 1000);
+  L3 = fitLine(f, T3, 246, 1000);
+  const s1 = L1.size, s3 = L3.size;
   const cap1 = (f.cap / f.upm) * s1;
   const cap3 = (f.cap / f.upm) * s3;
   const xhS = (R.serif.xh / R.serif.upm) * 200;
@@ -37,7 +43,7 @@ export function init(res) {
     cap1,
     cap3,
   };
-  isRun = run(R.serif, 'is', { size: 200 });
+  isRun = run(R.serif, T2, { size: 200 });
 }
 
 // Diagonal weight ripple that closes the shot.
@@ -57,7 +63,7 @@ export function draw(ctx, t) {
 
   // ---- TIMING: drop with squash & stretch; first letter lands on the downbeat.
   {
-    const r = run(f, 'TIMING', { size: L1.size, wght: 1000, wdth: L1.wdth });
+    const r = run(f, T1, { size: L1.size, wght: 1000, wdth: L1.wdth });
     for (const g of r.glyphs) {
       const land = g.i * 0.034;
       const fall = 0.17;
@@ -121,16 +127,17 @@ export function draw(ctx, t) {
   {
     const u = tau - 2 * BEAT;
     if (u > -0.02) {
-      const n = 11;
+      const n = T3.length;
       const style = (i) => {
         const p = ease.outExpo(sat((u - i * 0.022) / 0.5));
         return { wght: 1000, wdth: mix(151, L3.wdth, p) };
       };
-      const r = run(f, 'EVERYTHING.', { size: L3.size, style });
+      const r = run(f, T3, { size: L3.size, style });
       const slide = ease.outExpo(sat(u / 0.42));
       const x0 = mix(W + 40, MARGIN, slide);
       for (const g of r.glyphs) {
-        if (g.ch === '.') continue;
+        if (g.ch === '.' && g.i === n - 1) continue;
+        if (g.ch === ' ') continue;
         const cx = x0 + g.px + g.pw / 2;
         const wg = 1000 - ripple(t, cx, layout.base3);
         const gg = wg < 999 ? f.glyph(g.ch, wg, g.wdth) : g.g;
@@ -141,13 +148,13 @@ export function draw(ctx, t) {
       }
       // ---- the full stop: a paper dot that drops in on beat 4.
       const dotG = r.glyphs[n - 1];
-      const fin = run(f, 'EVERYTHING.', { size: L3.size, wght: 1000, wdth: L3.wdth });
+      const fin = run(f, T3, { size: L3.size, wght: 1000, wdth: L3.wdth });
       const fd = fin.glyphs[n - 1];
       const dr = L3.size * 0.105;
       const dx = MARGIN + fd.px + fd.pw / 2;
       const dy = layout.base3 - dr;
       const v = tau - 3 * BEAT;
-      if (v > -0.2 && dotG) {
+      if (v > -0.2 && dotG && dotG.ch === '.') {
         let y, sx = 1, sy = 1;
         const fall = 0.16;
         if (v < 0) {
